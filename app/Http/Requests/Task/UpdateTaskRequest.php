@@ -4,20 +4,21 @@ namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class UpdateTaskRequest extends FormRequest
 {
     function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:100'],
+            'title' => ['required', 'string', 'max:100'] , //unique
+            'priority' => ['required', 'in:1,2,3,4'],
             'description' => ['nullable', 'string', 'max:255'],
             'started_at' => ['nullable', 'date'],
             'finished_at' => ['nullable', 'date'],
-            'priority' => ['nullable', 'in:1,2,3,4'],
-            'reminder' => ['nullable'],
-            'label' => ['nullable', 'string', 'max:50'],
-            'status' => ['required', 'max:1', 'min:0'],
-            // 'storage_id',
+            'status' => ['nullable', 'in:0,1'],
+            'image' => ['nullable', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:2048'], // Max size 2MB
+            'category_id' => ['required' , 'array'],
+            'category_id.*'  => ['required' , 'exists:categories,id' , 'integer' , 'gt:0'],
         ];
     }
 }
