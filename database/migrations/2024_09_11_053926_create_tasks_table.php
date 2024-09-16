@@ -18,11 +18,9 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('started_at')->nullable();
             $table->string('finished_at')->nullable();
-            $table->string('priority')->nullable(); // 1 ta 4
-            $table->string('reminder')->nullable();
-            $table->string('label')->nullable();
-            // $table->string('storage_id') // we have some storage part(home , routines , ext);
+            $table->string('priority'); // 1 ta 3
             $table->string('status')->default(0); // 1 => done;
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
