@@ -26,7 +26,9 @@ class AuthRepository implements AuthRepositoryInterface
 
     public function login($request)
     {
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)
+        ->orWhere('email' , $request->email)
+        ->first();
 
         if (! $user) {
             return '.کاربر یافت نشد';
