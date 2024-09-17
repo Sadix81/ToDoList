@@ -13,9 +13,10 @@ Route::prefix('v1/user/')->group(function(){
     Route::post('/logout' , [AuthController::class , 'logout']);
 });
 
-Route::prefix('v1/user/task/')->middleware('auth:api')->group(function(){
+Route::prefix('v1/task/')->middleware('auth:api')->group(function(){
     Route::resource('/' , TaskController::class)->parameters(['' => 'task']);
     Route::post('/close/statsu/{task}' , [TaskController::class , 'closeStatus']);
+    Route::get('/close/statsu' , [TaskController::class , 'indexCloseStatus']);
 });
 
 Route::prefix('v1/task/category')->middleware('auth:api')->group(function(){
