@@ -22,6 +22,11 @@ class TaskController extends Controller
         return $this->taskrepo->index();
     }
 
+    public function indexCloseStatus()
+    {
+        return $this->taskrepo->closeStatusindex();
+    }
+
     public function store(CreateTaskRequest $request)
     {
         $error = $this->taskrepo->store($request);
