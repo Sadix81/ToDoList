@@ -42,13 +42,6 @@ class TaskRepository implements TaskRepositoryInterface
             throw $th;
         }
     }
-    
-    public function uploadImage($image ,  $path = 'images')
-    {
-        $image_name = time(). '-' .$image->getClientOriginalName();
-        $file = Storage::putFileAs($path , $image , $image_name);
-        return $file;
-    }
 
 
     public function store($request)
@@ -89,10 +82,17 @@ class TaskRepository implements TaskRepositoryInterface
         DB::beginTransaction();
 
         try {
-            $image_name = $task->image; // Default to existing image
-            if(request()->hasFile('image')){
+            $image_name = $task->image; 
+
+            // Check if an image has been uploaded
+            if ($request->hasFile('image')) {
                 $image_name = time() . '-' . $request->title . '-' . $request->image->getClientOriginalName();
-                $task->image->move(public_path('images') , $image_name);
+                $request->image->move(public_path('images'), $image_name);
+            } elseif ($request->image === null) {
+                $image_name = null;
+                if ($task->image && file_exists(public_path('images/' . $task->image))) {
+                    unlink(public_path('images/' . $task->image));
+                }
             }
 
             $task->update([
@@ -103,7 +103,7 @@ class TaskRepository implements TaskRepositoryInterface
                 'finished_at' => $request->finished_at ? $request->finished_at : $task->finished_at,
                 'priority' => $request->priority ? $request->priority : $task->priority,
                 'status' => $request->status ? $request->status : $task->status,
-                'image' => $request->image ? $request->image : $task->image ,
+                'image' => $image_name ,
             ]);
             if($request->has('category_id')){
                 $task->categories()->sync($request->category_id);
