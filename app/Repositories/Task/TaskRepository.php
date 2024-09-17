@@ -116,6 +116,16 @@ class TaskRepository implements TaskRepositoryInterface
         }
     }
 
+    public function closeStatus($task){
+        try {
+            // XOR
+            $task->status = $task->status ^ 1;
+            $task->save();
+        }catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function delete($task)
     {
         try {

@@ -46,6 +46,14 @@ class TaskController extends Controller
         return response()->json(['message' => __('messages.task.update.failed', ['title' => $task->title])], 500);
     }
 
+    public function closeStatus(Task $task){
+        $error = $this->taskrepo->closeStatus($task);
+        if ($error === null) {
+            return response()->json(['message' => __('messages.task.status.change.success')], 200);
+        }
+        return response()->json(['message' => __('messages.task.status.change.failed')], 500);
+    }
+
     public function destroy($task){
         $error = $this->taskrepo->delete($task);
         if ($error === null) {

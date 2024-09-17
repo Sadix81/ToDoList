@@ -10,5 +10,7 @@ interface TaskRepositoryInterface{
 
     public function update($task , $request);
 
+    public function closeStatus($task);
+
     public function delete($task);
 }
