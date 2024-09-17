@@ -43,7 +43,16 @@ class TaskRepository implements TaskRepositoryInterface
         }
     }
 
-
+    public function closeStatusindex()
+    {
+        try {
+            $tasks = Task::where('status' , 1)->latest()->get();
+            return $tasks;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    
     public function store($request)
     {
         $user = Auth::id();
