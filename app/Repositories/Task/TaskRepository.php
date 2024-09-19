@@ -20,6 +20,7 @@ class TaskRepository implements TaskRepositoryInterface
             'search' => request()->has('search') ? request('search') : null,
             'finished_at' => request()->has('finished_at') ? request('finished_at') : null,
             'priority' => request()->has('priority') ? request('priority') : null,
+            'status' => request()->has('status') ? 1 : 0,
         ];
         try {
             $task = Task::whereHas('user', function ($query) use ($req) {
@@ -32,6 +33,9 @@ class TaskRepository implements TaskRepositoryInterface
                 }
                 if ($req['priority']) {
                     $query->where('priority', 'Like', '%' . $req['priority'] . '%');
+                }
+                if ($req['status']) {
+                    $query->where('status', 1);
                 }
             })
                 ->orderBy($req['sort'], $req['order'])
