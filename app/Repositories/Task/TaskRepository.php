@@ -20,7 +20,7 @@ class TaskRepository implements TaskRepositoryInterface
             'search' => request()->has('search') ? request('search') : null,
             'finished_at' => request()->has('finished_at') ? request('finished_at') : null,
             'priority' => request()->has('priority') ? request('priority') : null,
-            'status' => request()->has('status') ? 1 : 0,
+            'status' => request()->has('status') ? 1 : null,
         ];
         try {
             $task = Task::whereHas('user', function ($query) use ($req) {
