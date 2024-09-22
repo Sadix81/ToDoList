@@ -3,14 +3,14 @@
 namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
     function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:100'] , //unique
+            'title' => ['required', 'string', 'max:100' , Rule::unique('tasks')->ignore($this->task)] , //unique
             'priority' => ['required', 'in:1,2,3,4'],
             'description' => ['nullable', 'string', 'max:255'],
             'started_at' => ['nullable', 'date'],
