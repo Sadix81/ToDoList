@@ -13,7 +13,7 @@ Route::prefix('v1/user/')->group(function(){
 })->middleware('auth:api')->group(function(){
     Route::post('/logout' , [AuthController::class , 'logout']);
 
-    Route::post('profile/update' , [ProfileController::class , 'update']);
+    Route::post('profile/update/{user}' , [ProfileController::class , 'update']);
 });
 
 Route::prefix('v1/task/')->middleware('auth:api')->group(function(){

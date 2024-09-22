@@ -20,7 +20,7 @@ class ProfileController extends Controller
 
     public function update(User $user , UpdateProfileRequest $request){
 
-        $user = Auth::user();
+        $user = Auth::id();
 
         if(! $user){
             return 'عدم دسترسی کاربر' ;
