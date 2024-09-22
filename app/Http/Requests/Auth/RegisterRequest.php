@@ -16,7 +16,7 @@ class RegisterRequest extends FormRequest
             
             'email' => ['nullable' , 'email' , 'unique:users,email'],
             'email_verified_at' => ['nullable'],
-            'avatar' => ['nullable', 'string'],
+            'avatar' => ['nullable', 'image'],
         ];
     }
 }
