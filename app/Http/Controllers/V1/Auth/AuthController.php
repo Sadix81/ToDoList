@@ -36,10 +36,12 @@ class AuthController extends Controller
     }
 
     public function logout(){
-        $accessToken = $this->authRepo->logout();
-        if ($accessToken) {
+        $this->authRepo->logout();
+        // $accessToken = $this->authRepo->logout();
+
+        // if ($accessToken) {
             return response()->json(['message' => __('messages.user.auth.logout.success'), '__token__' => $accessToken], 200);
-        }
-        return response()->json(['message' => __('messages.user.auth.logout.failed')], 500);
+        // }
+        // return response()->json(['message' => __('messages.user.auth.logout.failed')], 500);
     }
 }
