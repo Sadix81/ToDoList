@@ -5,8 +5,11 @@ namespace App\Http\Controllers\V1\Task;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\CreateTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Http\Resources\Task\IndexTaskResource;
+use App\Http\Resources\Task\ShowTaskResource;
 use App\Models\Task\Task;
 use App\Repositories\Task\TaskRepository;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -19,7 +22,13 @@ class TaskController extends Controller
 
     public function index()
     {
-        return $this->taskrepo->index();
+        $user = Auth::user();
+        
+        if(! $user){
+            return 'عدم دسترسی';
+        }
+
+        return IndexTaskResource::collection($this->taskrepo->index());
     }
 
     public function indexCloseStatus()
@@ -39,7 +48,13 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        //
+        $user = Auth::user();
+        
+        if(! $user){
+            return 'عدم دسترسی';
+        }
+
+        return new ShowTaskResource($task);
     }
 
     public function update(Task $task, UpdateTaskRequest $request)

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\V1\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
+use App\Http\Resources\Category\IndexCategoryResource;
+use App\Http\Resources\Category\ShowCategoryResource;
 use App\Models\Category\Category;
 use App\Repositories\Category\CategoryRepository;
 use Illuminate\Http\Request;
@@ -22,7 +24,13 @@ class CategoryController extends Controller
 
     public function index()
     {
-        return $this->categoryRepo->index();
+        $user = Auth::user();
+        
+        if(! $user){
+            return 'عدم دسترسی';
+        }
+        
+        return IndexCategoryResource::collection($this->categoryRepo->index());
     }
 
     public function store(CreateCategoryRequest $request)
@@ -48,7 +56,9 @@ class CategoryController extends Controller
         if(! $user){
             return 'عدم دسترسی';
         }
-        //
+        
+        return new ShowCategoryResource($category);
+
     }
 
     public function update(Category $category, UpdateCategoryRequest $request)
