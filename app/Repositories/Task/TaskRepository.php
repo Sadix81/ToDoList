@@ -21,6 +21,7 @@ class TaskRepository implements TaskRepositoryInterface
             'finished_at' => request()->has('finished_at') ? request('finished_at') : null,
             'priority' => request()->has('priority') ? request('priority') : null,
             'status' => request()->has('status') ? 1 : null,
+            // 'category' => request()->has('category') ? request('category') : null,
         ];
         try {
             $task = Task::whereHas('user', function ($query) use ($req) {
@@ -76,7 +77,7 @@ class TaskRepository implements TaskRepositoryInterface
                 'started_at' => $request->started_at ? $request->started_at : Carbon::now(),
                 'finished_at' => $request->finished_at,
                 'priority' => $request->priority,
-                'status' => $request->status ?: 0,
+                'status' => $request->status ?: 0, ///////////////////////////////////////////////////////////////
                 'image' => $request->image ? $image_name : null,
             ]);
             if($request->has('category_id')){

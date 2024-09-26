@@ -32,14 +32,12 @@ class AuthController extends Controller
         if ($accessToken) {
             return response()->json(['message' => __('messages.user.auth.login.success'), '__token__' => $accessToken], 200);
         }
-        return response()->json(['message' => __('messages.user.auth.login.failed')], 500);
+        return response()->json(['message' => __('messages.user.auth.login.failed')], 403);
     }
 
     public function logout(){
         $accessToken = $this->authRepo->logout();
-        if ($accessToken) {
-            return response()->json(['message' => __('messages.user.auth.logout.success'), '__token__' => $accessToken], 200);
-        }
-        return response()->json(['message' => __('messages.user.auth.logout.failed')], 500);
+        
+        return response()->json(['message' => __('messages.user.auth.logout.success'), '__token__' => $accessToken], 200);
     }
 }
