@@ -22,6 +22,6 @@ Route::prefix('v1/task/')->middleware('auth:api')->group(function(){
     Route::get('/close/statsu' , [TaskController::class , 'indexCloseStatus']);
 });
 
-Route::prefix('/v1/task/category')->middleware('auth:api')->group(function(){
+Route::prefix('/v1/category')->middleware('auth:api')->group(function(){
     Route::resource('/' , CategoryController::class)->parameters(['' => 'category']);
 });
