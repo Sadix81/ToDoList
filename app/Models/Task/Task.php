@@ -17,8 +17,8 @@ class Task extends Model
         'started_at',
         'finished_at',
         'priority',
-        'reminder',
-        'label',
+        // 'reminder',
+        // 'label',
         'status',
         'user_id',
         'image'
