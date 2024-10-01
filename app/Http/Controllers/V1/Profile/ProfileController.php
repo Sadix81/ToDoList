@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Models\User;
 use App\Repositories\Profile\ProfileRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -18,18 +17,20 @@ class ProfileController extends Controller
         $this->profielRepo = $profileRepository;
     }
 
-    public function update(User $user , UpdateProfileRequest $request){
+    public function update(User $user, UpdateProfileRequest $request)
+    {
 
         $user = Auth::id();
 
-        if(! $user){
-            return 'عدم دسترسی کاربر' ;
+        if (! $user) {
+            return 'عدم دسترسی کاربر';
         }
 
-        $error = $this->profielRepo->update($user , $request);
-        if($error === null){
-            return response()->json(['message' => __('messages.user.profile.update.success')] , 200);
+        $error = $this->profielRepo->update($user, $request);
+        if ($error === null) {
+            return response()->json(['message' => __('messages.user.profile.update.success')], 200);
         }
-        return response()->json(['message' => __('messages.user.profile.update.failed')] , 500);
+
+        return response()->json(['message' => __('messages.user.profile.update.failed')], 500);
     }
 }

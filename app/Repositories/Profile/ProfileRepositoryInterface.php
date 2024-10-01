@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Profile;
 
-interface ProfileRepositoryInterface{
-    
-    public function update($user , $request);
+interface ProfileRepositoryInterface
+{
+    public function update($user, $request);
 }
