@@ -4,11 +4,9 @@ namespace App\Repositories\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Passport\Passport;
 
 class AuthRepository implements AuthRepositoryInterface
 {
-
     public function register($request)
     {
         try {
@@ -27,8 +25,8 @@ class AuthRepository implements AuthRepositoryInterface
     public function login($request)
     {
         $user = User::where('username', $request->username)
-        ->orWhere('email' , $request->email)
-        ->first();
+            ->orWhere('email', $request->email)
+            ->first();
 
         if (! $user) {
             return '.کاربر یافت نشد';
@@ -36,8 +34,10 @@ class AuthRepository implements AuthRepositoryInterface
 
         if ($user && password_verify($request->password, $user->password)) {
             $token = $user->createToken('__Token__')->accessToken;
+
             return $token;
         }
+
         return null;
     }
 

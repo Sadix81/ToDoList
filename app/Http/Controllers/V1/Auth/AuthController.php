@@ -5,9 +5,7 @@ namespace App\Http\Controllers\V1\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\User;
 use App\Repositories\Auth\AuthRepository;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -15,29 +13,34 @@ class AuthController extends Controller
 
     public function __construct(AuthRepository $authRepository)
     {
-        $this->authRepo = $authRepository;    
+        $this->authRepo = $authRepository;
     }
 
-    public function register(RegisterRequest $request){
+    public function register(RegisterRequest $request)
+    {
         $error = $this->authRepo->register($request);
-        if($error === null){
-            return response()->json(['message' => __('messages.user.auth.register.success')],201);
+        if ($error === null) {
+            return response()->json(['message' => __('messages.user.auth.register.success')], 201);
         }
-        return response()->json(['message' => __('messages.user.auth.register.failed')],404);
+
+        return response()->json(['message' => __('messages.user.auth.register.failed')], 404);
 
     }
 
-    public function login(LoginRequest $request){
+    public function login(LoginRequest $request)
+    {
         $accessToken = $this->authRepo->login($request);
         if ($accessToken) {
             return response()->json(['message' => __('messages.user.auth.login.success'), '__token__' => $accessToken], 200);
         }
+
         return response()->json(['message' => __('messages.user.auth.login.failed')], 403);
     }
 
-    public function logout(){
+    public function logout()
+    {
         $accessToken = $this->authRepo->logout();
-        
+
         return response()->json(['message' => __('messages.user.auth.logout.success'), '__token__' => $accessToken], 200);
     }
 }
