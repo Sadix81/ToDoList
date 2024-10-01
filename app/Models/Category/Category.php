@@ -11,10 +11,11 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-      'title'  
+        'title',
     ];
 
-    public function tasks(){
-      return $this->belongsToMany(Task::class);
-  }
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class);
+    }
 }
