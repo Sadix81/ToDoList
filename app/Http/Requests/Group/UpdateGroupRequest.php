@@ -11,8 +11,8 @@ class UpdateUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:50', Rule::unique('groups')->ignore($this->group)],
-            'user_id' => ['required', 'array'],
-            'user_id.*' => ['required', 'exists:users,id', 'integer', 'gt:0'],
+            'user_id' => ['nullable', 'array'],
+            'user_id.*' => ['nullable', 'exists:users,id', 'integer', 'gt:0'],
         ];
     }
 }

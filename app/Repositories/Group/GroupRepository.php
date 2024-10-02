@@ -11,6 +11,8 @@ class GroupRepository implements GroupRepositoryInterface
 {
     public function index()
     {
+        $owner = Auth::id();
+
         $req = [
             'sort' => request()->has('sort') ? request('sort') : 'updated_at',
             'order' => request()->has('order') ? request('order') : 'desc',
@@ -18,15 +20,11 @@ class GroupRepository implements GroupRepositoryInterface
             'search' => request()->has('search') ? request('search') : null,
         ];
 
-        $owner = Auth::id();
-
         $group = Group::where('owner_id', $owner)
             ->where(function ($query) use ($req) {
-
                 if ($req['search']) {
-                    $query->where('name', $req['search']);
+                    $query->where('name', 'like' , '%' . $req['search'] . '%');
                 }
-
             })
             ->orderBy($req['sort'], $req['order'])
             ->paginate($req['limit']);
