@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -18,7 +16,7 @@ class RegisterTest extends TestCase
             'username' => 'sadra',
             'email' => 'sadra@gmail.com',
             'mobile' => '09111770000',
-            'password' => 'S@dra2091'
+            'password' => 'S@dra2091',
         ];
 
         $response = $this->postJson('api/v1/user/register', $data);

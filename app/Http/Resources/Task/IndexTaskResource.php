@@ -16,6 +16,7 @@ class IndexTaskResource extends JsonResource
             'finished_at' => $this->finished_at,
             'priority' => $this->priority,
             'status' => $this->status,
+            'category' => $this->categories->pluck('id'),
         ];
     }
 }
