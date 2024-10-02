@@ -109,13 +109,13 @@ class TaskRepository implements TaskRepositoryInterface
             }
 
             $task->update([
-                'user_id' => $request->user_id ? $user->id : $user->id,
+                'user_id' => $request->user_id ?: $user->id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'started_at' => $request->started_at ? $request->started_at : $task->started_at,
                 'finished_at' => $request->finished_at ? $request->finished_at : $task->finished_at,
                 'priority' => $request->priority ? $request->priority : $task->priority,
-                'status' => $request->status ? $request->status : $task->status,
+                'status' => $request->status !== null ?  $request->status : $task->status,
                 'image' => $image_name,
             ]);
             if ($request->has('category_id')) {

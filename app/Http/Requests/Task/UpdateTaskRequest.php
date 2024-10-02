@@ -15,7 +15,7 @@ class UpdateTaskRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:255'],
             'started_at' => ['nullable', 'date'],
             'finished_at' => ['nullable', 'date'],
-            'status' => ['nullable', 'in:0,1'],
+            'status' => ['nullable', 'integer' , 'in:0,1'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:2048'], // Max size 2MB
             'category_id' => ['required', 'array'],
             'category_id.*' => ['required', 'exists:categories,id', 'integer', 'gt:0'],
