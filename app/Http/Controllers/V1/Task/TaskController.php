@@ -78,7 +78,7 @@ class TaskController extends Controller
         return response()->json(['message' => __('messages.task.status.change.failed')], 500);
     }
 
-    public function destroy($task)
+    public function destroy(Task $task)
     {
         $error = $this->taskrepo->delete($task);
         if ($error === null) {
