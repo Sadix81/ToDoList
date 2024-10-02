@@ -70,7 +70,7 @@ class GroupController extends Controller
         return response()->json(['message' => __('messages.group.update.failed' , ['name' => $request->name])] , 500);
     }
 
-    public function destroy($group){
+    public function destroy(Group $group){
         $error = $this->groupRepo->delete($group);
         if ($error === null) {
             return response()->json(['message' => __('messages.group.delete.success')], 200);
