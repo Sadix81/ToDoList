@@ -6,11 +6,9 @@ use App\Models\Task\Task;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class TaskRepository implements TaskRepositoryInterface
 {
-
     public function index()
     {
         $req = [
@@ -27,13 +25,13 @@ class TaskRepository implements TaskRepositoryInterface
             $task = Task::whereHas('user', function ($query) use ($req) {
                 $query->where('user_id', Auth::id());
                 if ($req['search']) {
-                    $query->where('title', 'Like', '%' . $req['search'] . '%');
+                    $query->where('title', 'Like', '%'.$req['search'].'%');
                 }
                 if ($req['finished_at']) {
-                    $query->where('finished_at', 'Like', '%' . $req['finished_at'] . '%');
+                    $query->where('finished_at', 'Like', '%'.$req['finished_at'].'%');
                 }
                 if ($req['priority']) {
-                    $query->where('priority', 'Like', '%' . $req['priority'] . '%');
+                    $query->where('priority', 'Like', '%'.$req['priority'].'%');
                 }
                 if ($req['status']) {
                     $query->where('status', 1);
@@ -42,7 +40,7 @@ class TaskRepository implements TaskRepositoryInterface
                 ->orderBy($req['sort'], $req['order'])
                 ->paginate($req['limit']);
 
-                return $task;
+            return $task;
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -51,22 +49,23 @@ class TaskRepository implements TaskRepositoryInterface
     public function closeStatusindex()
     {
         try {
-            $tasks = Task::where('status' , 1)->latest()->get();
+            $tasks = Task::where('status', 1)->latest()->get();
+
             return $tasks;
         } catch (\Throwable $th) {
             throw $th;
         }
     }
-    
+
     public function store($request)
     {
         $user = Auth::id();
-        
+
         DB::beginTransaction();
-        
-        if(request()->hasFile('image')){
-            $image_name = time() . '-' . $request->title . '-' . $request->image->getClientOriginalName();
-            $request->image->move(public_path('images') , $image_name);
+
+        if (request()->hasFile('image')) {
+            $image_name = time().'-'.$request->title.'-'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('images'), $image_name);
         }
 
         try {
@@ -77,10 +76,10 @@ class TaskRepository implements TaskRepositoryInterface
                 'started_at' => $request->started_at ? $request->started_at : Carbon::now(),
                 'finished_at' => $request->finished_at,
                 'priority' => $request->priority,
-                'status' => $request->status ?: 0, ///////////////////////////////////////////////////////////////
+                'status' => $request->status ?: 0,
                 'image' => $request->image ? $image_name : null,
             ]);
-            if($request->has('category_id')){
+            if ($request->has('category_id')) {
                 $task->categories()->attach($request->category_id);
             }
             DB::commit();
@@ -96,30 +95,30 @@ class TaskRepository implements TaskRepositoryInterface
         DB::beginTransaction();
 
         try {
-            $image_name = $task->image; 
+            $image_name = $task->image;
 
             // Check if an image has been uploaded
             if ($request->hasFile('image')) {
-                $image_name = time() . '-' . $request->title . '-' . $request->image->getClientOriginalName();
+                $image_name = time().'-'.$request->title.'-'.$request->image->getClientOriginalName();
                 $request->image->move(public_path('images'), $image_name);
             } elseif ($request->image === null) {
                 $image_name = null;
-                if ($task->image && file_exists(public_path('images/' . $task->image))) {
-                    unlink(public_path('images/' . $task->image));
+                if ($task->image && file_exists(public_path('images/'.$task->image))) {
+                    unlink(public_path('images/'.$task->image));
                 }
             }
 
             $task->update([
-                'user_id' => $request->user_id ? $user->id : $user->id,
+                'user_id' => $request->user_id ?: $user->id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'started_at' => $request->started_at ? $request->started_at : $task->started_at,
                 'finished_at' => $request->finished_at ? $request->finished_at : $task->finished_at,
                 'priority' => $request->priority ? $request->priority : $task->priority,
-                'status' => $request->status ? $request->status : $task->status,
-                'image' => $image_name ,
+                'status' => $request->status !== null ?  $request->status : $task->status,
+                'image' => $image_name,
             ]);
-            if($request->has('category_id')){
+            if ($request->has('category_id')) {
                 $task->categories()->sync($request->category_id);
             }
 
@@ -130,12 +129,13 @@ class TaskRepository implements TaskRepositoryInterface
         }
     }
 
-    public function closeStatus($task){
+    public function closeStatus($task)
+    {
         try {
             // XOR
             $task->status = $task->status ^ 1;
             $task->save();
-        }catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             throw $th;
         }
     }

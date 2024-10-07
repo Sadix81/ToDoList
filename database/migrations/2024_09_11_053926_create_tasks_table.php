@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('started_at')->nullable();
             $table->string('finished_at')->nullable();
             $table->string('priority'); // 1 ta 3
-            $table->string('status')->default(0); // 1 => done;
+            $table->integer('status')->default(0); // 1 => done;
             $table->string('image')->nullable();
             $table->timestamps();
         });

@@ -2,15 +2,15 @@
 
 namespace App\Repositories\Task;
 
-interface TaskRepositoryInterface{
-
+interface TaskRepositoryInterface
+{
     public function index();
 
     public function closeStatusindex();
-    
+
     public function store($request);
 
-    public function update($task , $request);
+    public function update($task, $request);
 
     public function closeStatus($task);
 
