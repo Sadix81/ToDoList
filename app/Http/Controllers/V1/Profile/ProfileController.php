@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfileRequest;
+use App\Http\Resources\Profile\ShowProfileResource;
 use App\Models\User;
 use App\Repositories\Profile\ProfileRepository;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,15 @@ class ProfileController extends Controller
     public function __construct(ProfileRepository $profileRepository)
     {
         $this->profielRepo = $profileRepository;
+    }
+
+    public function show(User $user) {
+        $user = Auth::user();
+
+        if (! $user) {
+            return 'عدم دسترسی';
+        }
+        return new ShowProfileResource($user);
     }
 
     public function update(User $user, UpdateProfileRequest $request)
