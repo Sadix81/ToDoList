@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Mockery\Matcher\Subset;
 
 class User extends Authenticatable
 {
@@ -56,6 +57,11 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function subtasks()
+    {
+        return $this->hasMany(Subset::class);
     }
 
     public function groups()
