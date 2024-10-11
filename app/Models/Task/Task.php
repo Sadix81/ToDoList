@@ -4,6 +4,7 @@ namespace App\Models\Task;
 
 use App\Models\Category\Category;
 use App\Models\Note\Note;
+use App\Models\Subtask\Subtask;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,5 +38,9 @@ class Task extends Model
 
     public function notes(){
         return $this->hasMany(Note::class);
+    }
+
+    public function subtasks(){
+        return $this->hasMany(Subtask::class);
     }
 }
