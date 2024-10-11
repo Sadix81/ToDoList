@@ -6,6 +6,8 @@ use App\Repositories\Auth\AuthRepository;
 use App\Repositories\Auth\AuthRepositoryInterface;
 use App\Repositories\Group\GroupRepository;
 use App\Repositories\Group\GroupRepositoryInterface;
+use App\Repositories\Note\NoteRepository;
+use App\Repositories\Note\NoteRepositoryInterface;
 use App\Repositories\Subtask\SubtaskRepository;
 use App\Repositories\Subtask\SubtaskRepositoryInterface;
 use App\Repositories\Task\TaskRepository;
@@ -23,7 +25,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
         $this->app->bind(TaskRepositoryInterface::class, TaskRepository::class);
         $this->app->bind(GroupRepositoryInterface::class, GroupRepository::class);
-        $this->app->bind(SubtaskRepositoryInterface::class, SubtaskRepository::class);
+        $this->app->bind(NoteRepositoryInterface::class, NoteRepository::class);
+        // $this->app->bind(SubtaskRepositoryInterface::class, SubtaskRepository::class);
     }
 
     /**
