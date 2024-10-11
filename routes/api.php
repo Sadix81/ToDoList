@@ -5,6 +5,7 @@ use App\Http\Controllers\V1\Category\CategoryController;
 use App\Http\Controllers\V1\Group\GroupController;
 use App\Http\Controllers\V1\Note\NoteController;
 use App\Http\Controllers\V1\Profile\ProfileController;
+use App\Http\Controllers\V1\SubTask\SubtaskController;
 use App\Http\Controllers\V1\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,13 @@ Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
     Route::resource('/', TaskController::class)->parameters(['' => 'task']);
     Route::post('/close/statsu/{task}', [TaskController::class, 'closeStatus']);
     Route::get('/close/statsu', [TaskController::class, 'indexCloseStatus']);
+});
+
+Route::prefix('v1/subtask/')->middleware('auth:api')->group(function () {
+    Route::post('/', [SubtaskController::class , 'store']);
+    Route::get('/show/{subtask}', [SubtaskController::class , 'show']);
+    Route::post('/update/{subtask}', [SubtaskController::class , 'update']);
+    Route::delete('/destroy/{subtask}', [SubtaskController::class , 'destroy']);
 });
 
 Route::prefix('/v1/category')->middleware('auth:api')->group(function () {
