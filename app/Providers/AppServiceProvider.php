@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TaskRepositoryInterface::class, TaskRepository::class);
         $this->app->bind(GroupRepositoryInterface::class, GroupRepository::class);
         $this->app->bind(NoteRepositoryInterface::class, NoteRepository::class);
-        // $this->app->bind(SubtaskRepositoryInterface::class, SubtaskRepository::class);
+        $this->app->bind(SubtaskRepositoryInterface::class, SubtaskRepository::class);
     }
 
     /**
