@@ -3,7 +3,6 @@
 namespace App\Repositories\Group;
 
 use App\Models\Group\Group;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
