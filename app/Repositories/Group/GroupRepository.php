@@ -33,13 +33,13 @@ class GroupRepository implements GroupRepositoryInterface
 
     public function store($request)
     {
-        $owner_id = Auth::id();
+        $auth = Auth::id();
 
         DB::beginTransaction();
         try {
             $group = Group::create([
                 'name' => $request->name,
-                'owner_id' => $request->owner_id ? $owner_id : $owner_id,
+                'owner_id' => $request->owner_id ?: $auth,
             ]);
             if (request()->has('user_id')) {
                 $group->users()->attach($request->user_id);
