@@ -3,6 +3,7 @@
 namespace App\Models\Task;
 
 use App\Models\Category\Category;
+use App\Models\Group\Group;
 use App\Models\Note\Note;
 use App\Models\Subtask\Subtask;
 use App\Models\User;
@@ -22,7 +23,9 @@ class Task extends Model
         // 'reminder',
         // 'label',
         'status',
+        'owner_id',
         'user_id',
+        'group_id',
         'image',
     ];
 
@@ -42,5 +45,10 @@ class Task extends Model
 
     public function subtasks(){
         return $this->hasMany(Subtask::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 }

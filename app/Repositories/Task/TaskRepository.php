@@ -59,7 +59,7 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function store($request)
     {
-        $user = Auth::id();
+        $owner_id = Auth::id();
 
         DB::beginTransaction();
 
@@ -70,7 +70,9 @@ class TaskRepository implements TaskRepositoryInterface
 
         try {
             $task = Task::create([
-                'user_id' => $request->user_id ?: $user,
+                'owner_id' => $request->owner_id ?: $owner_id,
+                'user_id' => $request->user_id,
+                'group_id' => $request->group_id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'started_at' => $request->started_at ? $request->started_at : Carbon::now(),
@@ -109,7 +111,7 @@ class TaskRepository implements TaskRepositoryInterface
             }
 
             $task->update([
-                'user_id' => $request->user_id ?: $user->id,
+                'owner_id' => $request->owner_id ?: $user->id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'started_at' => $request->started_at ? $request->started_at : $task->started_at,

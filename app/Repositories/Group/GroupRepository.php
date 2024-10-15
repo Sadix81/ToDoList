@@ -61,7 +61,7 @@ class GroupRepository implements GroupRepositoryInterface
                 'owner_id' => $owner,
             ]);
             if (request()->has('user_id')) {
-                $group->users()->attach($request->user_id);
+                $group->users()->sync($request->user_id);
             }
             DB::commit();
         } catch (\Throwable $th) {
