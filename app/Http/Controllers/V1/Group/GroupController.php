@@ -39,7 +39,7 @@ class GroupController extends Controller
         }
         // dd($request->all());
         if(count($request->user_id) >= 5){
-            return response()->json(['message' => 'تکمیل ظرفیت گروه']);
+            return response()->json(['message' => 'مجاز به اضافه کردن 4 نفر هستید']);
         }
 
         $error = $this->groupRepo->store($request);
