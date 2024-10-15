@@ -15,7 +15,7 @@ class ShowSubtaskResource extends JsonResource
             'image' => $this->image,
             'status' => $this->status,
             'task_id' => $this->task_id,
-            'user_id' => $this->user_id,
+            'owner_id' => $this->owner_id,
         ];
     }
 }

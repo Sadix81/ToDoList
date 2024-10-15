@@ -12,7 +12,7 @@ class Subtask extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'owner_id',
         'task_id',
         'title',
         'description',

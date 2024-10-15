@@ -5,7 +5,7 @@ namespace App\Http\Requests\Group;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateUpdateRequest extends FormRequest
+class UpdateGroupRequest extends FormRequest
 {
     public function rules(): array
     {
