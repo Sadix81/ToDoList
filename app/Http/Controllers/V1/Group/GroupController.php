@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Group;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Group\CreateGroupRequest;
+use App\Http\Requests\Group\UpdateGroupRequest;
 use App\Http\Resources\Group\IndexGroupResource;
 use App\Http\Resources\Group\ShowGroupResource;
 use App\Models\Group\Group;
@@ -36,6 +37,10 @@ class GroupController extends Controller
         if (! $user) {
             return 'عدم دسترسی';
         }
+        // dd($request->all());
+        if(count($request->user_id) >= 5){
+            return response()->json(['message' => 'تکمیل ظرفیت گروه']);
+        }
 
         $error = $this->groupRepo->store($request);
         
@@ -55,11 +60,19 @@ class GroupController extends Controller
         return new ShowGroupResource($group);
     }
 
-    public function update(Group $group , CreateGroupRequest $request){
-        $user = Auth::id();
+    public function update(Group $group , UpdateGroupRequest $request){
+        $auth = Auth::id();
 
-        if (! $user) {
+        if (! $auth) {
             return 'عدم دسترسی';
+        }
+
+        // Check the users of the group
+        $groupUsers = $group->users()->get()->pluck('id');
+        $allUsers = $groupUsers; //containe all users from the group which we find it
+        $allUsers[] = $auth;
+        if(count($allUsers) > 6){
+            return response()->json(['message' => 'تکمیل ظرفیت گروه']);
         }
 
         $error = $this->groupRepo->update($group , $request);
