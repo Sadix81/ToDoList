@@ -20,8 +20,8 @@ class SubtaskRepository implements SubtaskRepositoryInterface
         }
 
         try {
-            $subtask = Subtask::create([
-                'user_id' => $request->user_id ?: $user,
+            Subtask::create([
+                'owner_id' => $request->owner_id ?  $request->owner_id : $user,
                 'task_id' => $request->task_id,
                 'title' => $request->title,
                 'description' => $request->description,

@@ -7,7 +7,9 @@ use App\Http\Requests\Task\CreateTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Resources\Task\IndexTaskResource;
 use App\Http\Resources\Task\ShowTaskResource;
+use App\Models\Group\Group;
 use App\Models\Task\Task;
+use App\Models\User;
 use App\Repositories\Task\TaskRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,6 +40,28 @@ class TaskController extends Controller
 
     public function store(CreateTaskRequest $request)
     {
+        $auth = Auth::id();
+        $group = null;
+        
+        if($request->group_id !== null){
+            $group = Group::find($request->group_id);
+        }
+
+        if($group){
+            // Check the users of the group
+            $groupUsers = $group->users()->get()->pluck('id');
+            $allUsers = $groupUsers; //containe all users from the group which we find it
+            $allUsers[] = $auth;
+        }
+
+        if($group && $request->user_id === null){
+            return 'تسک باید به شخصی واگذار شود';
+        }
+
+        if($group && (! $allUsers->contains($request->user_id))){
+            return 'کاربر مورد نظر یافت نشد';
+        }
+        
         $error = $this->taskrepo->store($request);
 
         if ($error === null) {
@@ -60,6 +84,27 @@ class TaskController extends Controller
 
     public function update(Task $task, UpdateTaskRequest $request)
     {
+        $auth = Auth::id();
+        $group = Group::find($request->group_id);
+
+
+        if (! $group) {
+            return 'گروهی یافت نشد';
+        }
+
+        if($group && $request->user_id === null){
+            return 'تسک باید به شخصی واگذار شود';
+        }
+
+        // Check the users of the group
+        $groupUsers = $group->users()->get()->pluck('id');
+        $allUsers = $groupUsers; //containe all users from the group which we find it
+        $allUsers[] = $auth;
+
+        if($group && (! $allUsers->contains($request->user_id))){
+            return 'کاربر مورد نظر یافت نشد';
+        }
+
         $error = $this->taskrepo->update($task, $request);
         if ($error === null) {
             return response()->json(['message' => __('messages.task.update.success', ['title' => $task->title])], 200);

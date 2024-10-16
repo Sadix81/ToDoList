@@ -19,6 +19,8 @@ class UpdateTaskRequest extends FormRequest
             'image' => ['nullable', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:2048'], // Max size 2MB
             'category_id' => ['required', 'array'],
             'category_id.*' => ['required', 'exists:categories,id', 'integer', 'gt:0'],
+            'user_id' => ['nullable' , 'exists:users,id' , 'integer' , 'gt:0'],
+            'group_id' => ['nullable', 'exists:groups,id' , 'integer' , 'gt:0'],
         ];
     }
 }
