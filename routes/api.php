@@ -37,7 +37,7 @@ Route::prefix('/v1/category')->middleware('auth:api')->group(function () {
 });
 
 Route::prefix('/v1/note')->middleware('auth:api')->group(function () {
-    Route::resource('/', NoteController::class)->parameters(['' => 'note']);
+    Route::resource('/', NoteController::class)->except('index')->parameters(['' => 'note']);
 });
 
 Route::prefix('/v1/group')->middleware('auth:api')->group(function () {

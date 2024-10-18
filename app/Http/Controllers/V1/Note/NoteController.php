@@ -19,10 +19,6 @@ class NoteController extends Controller
         $this->noteRepo = $noteRepository;
     }
 
-    public function index(){
-        return ShowNoteResource::collection($this->noteRepo->index());
-    }
-
     public function store(CreateNoteRequest $request){
         
         $error = $this->noteRepo->store($request);
