@@ -28,6 +28,10 @@ class NoteController extends Controller
         return response()->json(['message' => __('messages.note.store.failed')] , 500);
     }
 
+    public function show(Note $note){
+        return new ShowNoteResource($note);
+    }
+
     public function update(Note $note , UpdateNoteRequest $request){
 
         if((int)$request->task_id !== $note->task_id){
