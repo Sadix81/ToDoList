@@ -85,21 +85,22 @@ class TaskController extends Controller
     public function update(Task $task, UpdateTaskRequest $request)
     {
         $auth = Auth::id();
-        $group = Group::find($request->group_id);
+        $group = $request->group_id;
+        
+        if($request->group_id){
+            $group = Group::find($request->group_id);
+        }
 
-
-        if (! $group) {
-            return 'گروهی یافت نشد';
+        if($group){
+            // Check the users of the group
+            $groupUsers = $group->users()->get()->pluck('id');
+            $allUsers = $groupUsers; //containe all users from the group which we find it
+            $allUsers[] = $auth;
         }
 
         if($group && $request->user_id === null){
             return 'تسک باید به شخصی واگذار شود';
         }
-
-        // Check the users of the group
-        $groupUsers = $group->users()->get()->pluck('id');
-        $allUsers = $groupUsers; //containe all users from the group which we find it
-        $allUsers[] = $auth;
 
         if($group && (! $allUsers->contains($request->user_id))){
             return 'کاربر مورد نظر یافت نشد';
