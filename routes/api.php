@@ -26,10 +26,10 @@ Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
 });
 
 Route::prefix('v1/subtask/')->middleware('auth:api')->group(function () {
-    Route::post('/', [SubtaskController::class , 'store']);
+    Route::post('/{task}', [SubtaskController::class , 'store']);
     Route::get('/show/{subtask}', [SubtaskController::class , 'show']);
-    Route::post('/update/{subtask}', [SubtaskController::class , 'update']);
-    Route::delete('/destroy/{subtask}', [SubtaskController::class , 'destroy']);
+    Route::post('/update/{task}/{subtask}', [SubtaskController::class , 'update']);
+    Route::delete('/destroy/{task}/{subtask}', [SubtaskController::class , 'destroy']);
 });
 
 Route::prefix('/v1/category')->middleware('auth:api')->group(function () {
