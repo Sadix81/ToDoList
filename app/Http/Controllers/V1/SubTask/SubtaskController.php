@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Subtask\CreateSubtaskRequest;
 use App\Http\Requests\Subtask\UpdateSubtaskRequest;
 use App\Http\Resources\Subtask\ShowSubtaskResource;
+use App\Models\Group\Group;
 use App\Models\Subtask\Subtask;
+use App\Models\Task\Task;
 use App\Repositories\Subtask\SubtaskRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,9 +22,15 @@ class SubtaskController extends Controller
         $this->subTask = $subtaskRepository;
     }
 
-    public function store(CreateSubtaskRequest $request)
+    public function store(Task $task , CreateSubtaskRequest $request)
     {
-        $error = $this->subTask->store($request);
+        $task = Task::find($task);
+        
+        if(! $task){
+            return 'تسکی یافت نشد';
+        }
+
+        $error = $this->subTask->store($task , $request);
 
         if ($error === null) {
             return response()->json(['message' => __('messages.subtask.store.success', ['title' => $request->title])], 201);
@@ -33,18 +41,57 @@ class SubtaskController extends Controller
 
     public function show(Subtask $subtask)
     {
-        $user = Auth::user();
+        $auth = Auth::id();
 
-        if (! $user) {
+        if (! $auth) {
             return 'عدم دسترسی';
         }
 
         return new ShowSubtaskResource($subtask);
     }
 
-    public function update(Subtask $subtask, UpdateSubtaskRequest $request)
+    public function update(Task $task ,Subtask $subtask, UpdateSubtaskRequest $request)
     {
-        $error = $this->subTask->update($subtask, $request);
+        $auth = Auth::id();
+        $group = null;
+
+        if (! $auth) {
+            return 'عدم دسترسی';
+        }
+
+        if(! $task){
+            return 'تسکی یافت نشد';
+        }
+
+        if(! $subtask){
+            return 'موردی یافت نشد';
+        }
+        
+        if($task->id && ($subtask->task_id !== $task->id)){
+            return 'تسک مورد نظر یافت نشد';
+        }
+
+        if($task->group_id !== null){
+            $group = Group::find($request->group_id);
+        }
+
+        if($group){
+            // Check the users of the group
+            $groupUsers = $group->users()->get()->pluck('id');
+            $allUsers = $groupUsers; //containe all users from the group which we find it
+            $allUsers[] = $auth;
+        }
+
+        if($group && $request->owner_id === null){
+            return 'تسک باید به شخصی واگذار شود';
+        }
+
+        if($group && (! $allUsers->contains($request->owner_id))){
+            return 'کاربر مورد نظر یافت نشد';
+        }
+
+        
+        $error = $this->subTask->update($task , $subtask, $request);
         if ($error === null) {
             return response()->json(['message' => __('messages.subtask.update.success', ['title' => $subtask->title])], 200);
         }
@@ -52,9 +99,27 @@ class SubtaskController extends Controller
         return response()->json(['message' => __('messages.subtask.update.failed', ['title' => $subtask->title])], 500);
     }
 
-    public function destroy(Subtask $subtask)
+    public function destroy(Task $task , Subtask $subtask)
     {
-        $error = $this->subTask->delete($subtask);
+        $auth = Auth::id();
+
+        if (! $auth) {
+            return 'عدم دسترسی';
+        }
+        
+        if(! $task){
+            return 'تسکی یافت نشد';
+        }
+
+        if(! $subtask){
+            return 'موردی یافت نشد';
+        }
+        
+        if($task->id && ($subtask->task_id !== $task->id)){
+            return 'تسک مورد نظر یافت نشد';
+        }
+
+        $error = $this->subTask->delete($task , $subtask);
         if ($error === null) {
             return response()->json(['message' => __('messages.subtask.delete.success')], 200);
         }

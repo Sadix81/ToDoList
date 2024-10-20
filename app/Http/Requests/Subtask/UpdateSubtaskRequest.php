@@ -14,8 +14,7 @@ class UpdateSubtaskRequest extends FormRequest
             'description' => ['nullable' , 'string' , 'max:255'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:5048'], // Max size 5MB
             'status' => ['nullable', 'in:0,1'],
-            'task_id' => ['required', 'exists:tasks,id', 'integer', 'gt:0'],
-            'user_id' => ['required', 'exists:users,id', 'integer', 'gt:0'],
+            'owner_id' => ['nullable', 'exists:users,id', 'integer', 'gt:0'],
         ];
     }
 }
