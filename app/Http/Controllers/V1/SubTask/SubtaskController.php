@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\SubTask;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subtask\CreateSubtaskRequest;
 use App\Http\Requests\Subtask\UpdateSubtaskRequest;
+use App\Http\Resources\Subtask\IndexSubtaskResource;
 use App\Http\Resources\Subtask\ShowSubtaskResource;
 use App\Models\Group\Group;
 use App\Models\Subtask\Subtask;
@@ -20,6 +21,11 @@ class SubtaskController extends Controller
     public function __construct(SubtaskRepository $subtaskRepository)
     {
         $this->subTask = $subtaskRepository;
+    }
+
+    public function index(Task $task){
+
+        return IndexSubtaskResource::collection($this->subTask->index($task));
     }
 
     public function store(Task $task , CreateSubtaskRequest $request)
@@ -39,12 +45,20 @@ class SubtaskController extends Controller
         return response()->json(['message' => __('messages.subtask.store.failed', ['title' => $request->title])], 500);
     }
 
-    public function show(Subtask $subtask)
+    public function show(Task $task , Subtask $subtask)
     {
         $auth = Auth::id();
 
         if (! $auth) {
             return 'عدم دسترسی';
+        }
+
+        if(! $subtask){
+            return 'موردی یافت نشد';
+        }
+
+        if($task->id && ($subtask->task_id !== $task->id)){
+            return 'تسک مورد نظر یافت نشد';
         }
 
         return new ShowSubtaskResource($subtask);
