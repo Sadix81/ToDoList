@@ -4,7 +4,7 @@ namespace App\Repositories\Subtask;
 
 interface SubtaskRepositoryInterface
 {
-    // public function index();
+    public function index($task);
 
     public function store($task , $request);
 
