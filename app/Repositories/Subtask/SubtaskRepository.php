@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\DB;
 
 class SubtaskRepository implements SubtaskRepositoryInterface
 {
+
+    public function index($task){
+        try {
+            $subtasks = Subtask::where('task_id', $task->id)->get();
+            return $subtasks;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function store($task , $request)
     {
         $user = Auth::id();

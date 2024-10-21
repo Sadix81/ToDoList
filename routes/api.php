@@ -26,8 +26,9 @@ Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
 });
 
 Route::prefix('v1/subtask/')->middleware('auth:api')->group(function () {
+    Route::get('/{task}', [SubtaskController::class , 'index']);
     Route::post('/{task}', [SubtaskController::class , 'store']);
-    Route::get('/show/{subtask}', [SubtaskController::class , 'show']);
+    Route::get('/show/{task}/{subtask}', [SubtaskController::class , 'show']);
     Route::post('/update/{task}/{subtask}', [SubtaskController::class , 'update']);
     Route::delete('/destroy/{task}/{subtask}', [SubtaskController::class , 'destroy']);
 });
