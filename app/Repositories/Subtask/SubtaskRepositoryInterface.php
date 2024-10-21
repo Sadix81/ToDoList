@@ -4,11 +4,11 @@ namespace App\Repositories\Subtask;
 
 interface SubtaskRepositoryInterface
 {
-    // public function index();
+    public function index($task);
 
-    public function store($request);
+    public function store($task , $request);
 
-    public function update($subtask, $request);
+    public function update($task , $subtask, $request);
 
-    public function delete($subtask);
+    public function delete($task , $subtask);
 }

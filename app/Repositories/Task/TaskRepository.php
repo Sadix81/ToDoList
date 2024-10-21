@@ -22,8 +22,8 @@ class TaskRepository implements TaskRepositoryInterface
             // 'category' => request()->has('category') ? request('category') : null,
         ];
         try {
-            $task = Task::whereHas('user', function ($query) use ($req) {
-                $query->where('user_id', Auth::id());
+            $task = Task::where(function ($query) use ($req) {
+                $query->where('owner_id', Auth::id());
                 if ($req['search']) {
                     $query->where('title', 'Like', '%'.$req['search'].'%');
                 }
@@ -112,6 +112,8 @@ class TaskRepository implements TaskRepositoryInterface
 
             $task->update([
                 'owner_id' => $request->owner_id ?: $user->id,
+                'user_id' => $request->user_id,
+                'group_id' => $request->group_id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'started_at' => $request->started_at ? $request->started_at : $task->started_at,

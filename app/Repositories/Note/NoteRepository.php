@@ -7,12 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NoteRepository implements NoteRepositoryInterface
 {
-    public function index(){
-        // $note = Note::whereHas('task' , function($query){
-        //     $query->where()
-        // });
-    }
-
     public function store($request){
 
         $user_id = Auth::id();

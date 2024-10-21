@@ -3,12 +3,23 @@
 namespace App\Repositories\Subtask;
 
 use App\Models\Subtask\Subtask;
+use App\Models\Task\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SubtaskRepository implements SubtaskRepositoryInterface
 {
-    public function store($request)
+
+    public function index($task){
+        try {
+            $subtasks = Subtask::where('task_id', $task->id)->get();
+            return $subtasks;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function store($task , $request)
     {
         $user = Auth::id();
 
@@ -21,8 +32,8 @@ class SubtaskRepository implements SubtaskRepositoryInterface
 
         try {
             Subtask::create([
-                'owner_id' => $request->owner_id ?  $request->owner_id : $user,
-                'task_id' => $request->task_id,
+                'owner_id' => $request->owner_id ? $request->owner_id : $user,
+                'task_id' => $task->id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'status' => $request->status ?: 0,
@@ -34,9 +45,13 @@ class SubtaskRepository implements SubtaskRepositoryInterface
         }
     }
 
-    public function update($subtask, $request)
+    public function update($task , $subtask , $request)
     {
         $user = Auth::user();
+        
+        $subtask = Subtask::where('task_id' , $task->id)
+        ->where('id' , $subtask->id)->firstOrFail();
+
 
         DB::beginTransaction();
 
@@ -55,8 +70,8 @@ class SubtaskRepository implements SubtaskRepositoryInterface
             }
 
             $subtask->update([
-                'user_id' => $request->user_id ?: $user->id,
-                'task_id' => $request->task_id ? $request->task_id : $subtask->task_id,
+                'owner_id' => $request->owner_id ? $request->owner_id : $user->id,
+                'task_id' => $task->id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'status' => $request->status !== null ?  $request->status : $subtask->status,
@@ -69,8 +84,10 @@ class SubtaskRepository implements SubtaskRepositoryInterface
         }
     }
 
-    public function delete($subtask)
+    public function delete($task , $subtask)
     {
+        $subtask = Subtask::where('task_id' , $task->id)
+        ->where('id' , $subtask->id)->firstOrFail();
         try {
             $subtask->delete();
         } catch (\Throwable $th) {

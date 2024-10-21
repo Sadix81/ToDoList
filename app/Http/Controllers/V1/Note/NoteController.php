@@ -19,10 +19,6 @@ class NoteController extends Controller
         $this->noteRepo = $noteRepository;
     }
 
-    public function index(){
-        return ShowNoteResource::collection($this->noteRepo->index());
-    }
-
     public function store(CreateNoteRequest $request){
         
         $error = $this->noteRepo->store($request);
@@ -30,6 +26,10 @@ class NoteController extends Controller
             return response()->json(['message' => __('messages.note.store.seccuess' , ['description' => $request->description])] , 201);
         }
         return response()->json(['message' => __('messages.note.store.failed')] , 500);
+    }
+
+    public function show(Note $note){
+        return new ShowNoteResource($note);
     }
 
     public function update(Note $note , UpdateNoteRequest $request){
