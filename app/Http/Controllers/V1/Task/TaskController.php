@@ -85,9 +85,9 @@ class TaskController extends Controller
     public function update(Task $task, UpdateTaskRequest $request)
     {
         $auth = Auth::id();
-        $group = $request->group_id;
+        $group = $task->group_id;
         
-        if($request->group_id){
+        if($group){
             $group = Group::find($request->group_id);
         }
 
