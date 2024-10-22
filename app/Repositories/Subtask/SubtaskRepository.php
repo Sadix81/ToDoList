@@ -33,6 +33,7 @@ class SubtaskRepository implements SubtaskRepositoryInterface
         try {
             Subtask::create([
                 'owner_id' => $request->owner_id ? $request->owner_id : $user,
+                // user_id
                 'task_id' => $task->id,
                 'title' => $request->title,
                 'description' => $request->description,

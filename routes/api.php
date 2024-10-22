@@ -21,16 +21,17 @@ Route::prefix('v1/user/')->group(function () {
 
 Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
     Route::resource('/', TaskController::class)->parameters(['' => 'task']);
-    Route::post('/close/statsu/{task}', [TaskController::class, 'closeStatus']);
-    Route::get('/close/statsu', [TaskController::class, 'indexCloseStatus']);
+    Route::post('/close/status/{task}', [TaskController::class, 'closeStatus']);
+    Route::get('/close/status', [TaskController::class, 'indexCloseStatus']);
 });
 
 Route::prefix('v1/subtask/')->middleware('auth:api')->group(function () {
     Route::get('/{task}', [SubtaskController::class , 'index']);
     Route::post('/{task}', [SubtaskController::class , 'store']);
     Route::get('/show/{task}/{subtask}', [SubtaskController::class , 'show']);
-    Route::post('/update/{task}/{subtask}', [SubtaskController::class , 'update']);
+    Route::put('/update/{task}/{subtask}', [SubtaskController::class , 'update']);
     Route::delete('/destroy/{task}/{subtask}', [SubtaskController::class , 'destroy']);
+    // close status
 });
 
 Route::prefix('/v1/category')->middleware('auth:api')->group(function () {
