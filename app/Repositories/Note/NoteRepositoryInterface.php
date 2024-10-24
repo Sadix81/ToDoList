@@ -4,9 +4,11 @@ namespace App\Repositories\Note;
 
 interface NoteRepositoryInterface
 {
-    public function store($request);
+    public function index($task);
 
-    public function update($note, $request);
+    public function store($task , $request);
 
-    public function delete($note);
+    public function update($task , $note, $request);
+
+    public function delete($task , $note);
 }
