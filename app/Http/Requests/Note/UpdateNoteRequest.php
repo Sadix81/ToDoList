@@ -10,7 +10,6 @@ class UpdateNoteRequest extends FormRequest
     {
         return [
             'description' => ['nullable' , 'string' , 'max:255'],
-            'task_id' => ['required' , 'exists:tasks,id', 'integer', 'gt:0'],
         ];
     }
 }
