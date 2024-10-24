@@ -29,9 +29,7 @@ class SubtaskController extends Controller
     }
 
     public function store(Task $task , CreateSubtaskRequest $request)
-    {
-        $task = Task::find($task);
-        
+    {        
         if(! $task){
             return 'تسکی یافت نشد';
         }
