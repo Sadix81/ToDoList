@@ -22,6 +22,8 @@ class ShowTaskResource extends JsonResource
             'status' => $this->status,
             'image' => $this->image,
             'category' => $this->categories->pluck('title'),
+            'note' => $this->notes->pluck('description'),
+            'subtask' => $this->subtasks->pluck('title'),
         ];
     }
 }
