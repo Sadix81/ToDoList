@@ -88,7 +88,7 @@ class TaskController extends Controller
         $group = $task->group_id;
         
         if($group){
-            $group = Group::find($request->group_id);
+            $group = Group::find($task->group_id);
         }
 
         if($group){
