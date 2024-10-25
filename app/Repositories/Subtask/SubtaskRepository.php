@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 class SubtaskRepository implements SubtaskRepositoryInterface
 {
 
-    public function index($task){
+    public function index($task)
+    {
         try {
             $subtasks = Subtask::where('task_id', $task->id)->get();
             return $subtasks;
@@ -32,8 +33,8 @@ class SubtaskRepository implements SubtaskRepositoryInterface
 
         try {
             Subtask::create([
-                'owner_id' => $request->owner_id ? $request->owner_id : $user,
-                // user_id
+                'owner_id' => $user,
+                'user_id' => $request->user_id ? $request->user_id : $user,
                 'task_id' => $task->id,
                 'title' => $request->title,
                 'description' => $request->description,
@@ -48,11 +49,10 @@ class SubtaskRepository implements SubtaskRepositoryInterface
 
     public function update($task , $subtask , $request)
     {
-        $user = Auth::user();
+        $user = Auth::id();
         
         $subtask = Subtask::where('task_id' , $task->id)
         ->where('id' , $subtask->id)->firstOrFail();
-
 
         DB::beginTransaction();
 
@@ -71,7 +71,8 @@ class SubtaskRepository implements SubtaskRepositoryInterface
             }
 
             $subtask->update([
-                'owner_id' => $request->owner_id ? $request->owner_id : $user->id,
+                'owner_id' => $user,
+                'user_id' => $request->user_id ? $request->user_id : $request->user_id,
                 'task_id' => $task->id,
                 'title' => $request->title,
                 'description' => $request->description,
@@ -81,6 +82,17 @@ class SubtaskRepository implements SubtaskRepositoryInterface
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public function closeStatus($task , $subtask)
+    {
+        try {
+            // XOR
+            $subtask->status = $subtask->status ^ 1;
+            $subtask->save();
+        } catch (\Throwable $th) {
             throw $th;
         }
     }

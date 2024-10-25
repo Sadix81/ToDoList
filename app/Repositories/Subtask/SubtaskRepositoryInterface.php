@@ -10,5 +10,7 @@ interface SubtaskRepositoryInterface
 
     public function update($task , $subtask, $request);
 
+    public function closeStatus($task , $subtask);
+
     public function delete($task , $subtask);
 }
