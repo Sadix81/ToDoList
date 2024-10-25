@@ -42,6 +42,10 @@ class TaskController extends Controller
     {
         $auth = Auth::id();
         $group = null;
+
+        if($request->group_id === null && $request->user_id !== null){
+            return 'تسک به گروهی وابسته نیست';
+        }
         
         if($request->group_id !== null){
             $group = Group::find($request->group_id);
@@ -85,10 +89,14 @@ class TaskController extends Controller
     public function update(Task $task, UpdateTaskRequest $request)
     {
         $auth = Auth::id();
-        $group = $request->group_id;
+        $group = $task->group_id;
+
+        if($group === null && $request->user_id !== null){
+            return 'تسک به گروهی وابسته نیست';
+        }
         
-        if($request->group_id){
-            $group = Group::find($request->group_id);
+        if($group){
+            $group = Group::find($task->group_id);
         }
 
         if($group){
