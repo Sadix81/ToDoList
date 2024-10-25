@@ -21,8 +21,8 @@ class IndexTaskResource extends JsonResource
             'priority' => $this->priority,
             'status' => $this->status,
             'category' => $this->categories->pluck('title'),
-            // note
-            //subtask
+            'note' => $this->notes->pluck('description'),
+            'subtask' => $this->subtasks->pluck('title'),
         ];
     }
 }
