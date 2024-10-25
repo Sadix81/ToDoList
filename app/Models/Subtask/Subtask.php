@@ -13,6 +13,7 @@ class Subtask extends Model
 
     protected $fillable = [
         'owner_id',
+        'user_id',
         'task_id',
         'title',
         'description',

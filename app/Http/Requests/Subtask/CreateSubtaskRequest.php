@@ -13,7 +13,7 @@ class CreateSubtaskRequest extends FormRequest
             'description' => ['nullable' , 'string' , 'max:255'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:5048'], // Max size 5MB
             'status' => ['nullable', 'in:0,1'],
-            'owner_id' => ['nullable', 'exists:users,id', 'integer', 'gt:0'],
+            'user_id' => ['nullable', 'exists:users,id', 'integer', 'gt:0'],
         ];
     }
 }

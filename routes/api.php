@@ -31,7 +31,7 @@ Route::prefix('v1/subtask/')->middleware('auth:api')->group(function () {
     Route::get('/show/{task}/{subtask}', [SubtaskController::class , 'show']);
     Route::put('/update/{task}/{subtask}', [SubtaskController::class , 'update']);
     Route::delete('/destroy/{task}/{subtask}', [SubtaskController::class , 'destroy']);
-    // close status
+    Route::patch('/close/status/{task}/{subtask}', [SubtaskController::class, 'closeStatus']);
 });
 
 Route::prefix('/v1/category')->middleware('auth:api')->group(function () {
