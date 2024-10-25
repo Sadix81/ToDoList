@@ -21,7 +21,7 @@ Route::prefix('v1/user/')->group(function () {
 
 Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
     Route::resource('/', TaskController::class)->parameters(['' => 'task']);
-    Route::post('/close/status/{task}', [TaskController::class, 'closeStatus']);
+    Route::patch('/close/status/{task}', [TaskController::class, 'closeStatus']);
     Route::get('/close/status', [TaskController::class, 'indexCloseStatus']);
 });
 
