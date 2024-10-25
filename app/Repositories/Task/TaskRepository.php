@@ -19,11 +19,16 @@ class TaskRepository implements TaskRepositoryInterface
             'finished_at' => request()->has('finished_at') ? request('finished_at') : null,
             'priority' => request()->has('priority') ? request('priority') : null,
             'status' => request()->has('status') ? 1 : null,
-            // 'category' => request()->has('category') ? request('category') : null,
+            'category' => request()->has('category') ? request('category') : null,
         ];
         try {
-            $task = Task::where(function ($query) use ($req) {
-                $query->where('owner_id', Auth::id());
+            $task = Task::where('owner_id' , Auth::id())
+            ->whereHas('categories' , function($query) use ($req){
+                if($req['category']){
+                    $query->where('category_id' , $req['category']);
+                }
+            })
+            ->where(function($query) use($req){
                 if ($req['search']) {
                     $query->where('title', 'Like', '%'.$req['search'].'%');
                 }
@@ -31,7 +36,7 @@ class TaskRepository implements TaskRepositoryInterface
                     $query->where('finished_at', 'Like', '%'.$req['finished_at'].'%');
                 }
                 if ($req['priority']) {
-                    $query->where('priority', 'Like', '%'.$req['priority'].'%');
+                    $query->where('priority', $req['priority']);
                 }
                 if ($req['status']) {
                     $query->where('status', 1);
