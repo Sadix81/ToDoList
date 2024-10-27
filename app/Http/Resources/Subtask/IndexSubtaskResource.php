@@ -10,7 +10,7 @@ class IndexSubtaskResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            // 'id' => $this->id,
+            'id' => $this->id,
             'title' => $this->title,
             'owner_id' => $this->owner_id,
             'user_id' => $this->user_id,
