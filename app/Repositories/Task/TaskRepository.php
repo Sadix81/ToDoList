@@ -17,6 +17,7 @@ class TaskRepository implements TaskRepositoryInterface
             'limit' => request()->has('limit') ? request('limit') : '25',
             'search' => request()->has('search') ? request('search') : null,
             'finished_at' => request()->has('finished_at') ? request('finished_at') : null,
+            // 'start_at' => request()->has('start_at') ? request('start_at') : null,
             'priority' => request()->has('priority') ? request('priority') : null,
             'status' => request()->has('status') ? 1 : null,
             'category' => request()->has('category') ? request('category') : null,

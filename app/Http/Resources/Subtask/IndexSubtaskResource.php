@@ -14,6 +14,7 @@ class IndexSubtaskResource extends JsonResource
             'title' => $this->title,
             'owner_id' => $this->owner_id,
             'user_id' => $this->user_id,
+            'status' => $this->status,
         ];
     }
 }
