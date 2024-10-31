@@ -14,7 +14,7 @@ class RegisterRequest extends FormRequest
             'mobile' => ['required', 'regex:/[0-9]{10}/', 'digits:11', 'unique:users,mobile'],
             'password' => ['required', 'min:8', 'regex:/[0-9]/', 'regex:/[A-Z]/', 'regex:/[a-z]/'],
 
-            'email' => ['nullable', 'email', 'unique:users,email'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'email_verified_at' => ['nullable'],
             'avatar' => ['nullable', 'image'],
         ];
