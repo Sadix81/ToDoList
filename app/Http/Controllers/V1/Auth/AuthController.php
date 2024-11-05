@@ -20,7 +20,7 @@ class AuthController extends Controller
     {
         $error = $this->authRepo->register($request);
         if ($error === null) {
-            return response()->json(['message' => __('messages.user.auth.register.success')], 201);
+            return response()->json(['message' => 'Registration successful, please check your email for verification code.'] , 201);
         }
 
         return response()->json(['message' => __('messages.user.auth.register.failed')], 404);
