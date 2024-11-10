@@ -2,21 +2,27 @@
 
 namespace App\Repositories\Auth;
 
+use App\Mail\MyEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthRepository implements AuthRepositoryInterface
 {
     public function register($request)
     {
         try {
-            User::create([
+            $user = User::create([
                 'fullname' => $request->fullname,
                 'username' => $request->username,
                 'email' => $request->email,
                 'mobile' => $request->mobile,
                 'password' => password_hash($request->password, PASSWORD_DEFAULT),
             ]);
+            
+            $verificationCode  = rand(11111 , 99999);
+            Mail::to($user->email)->send(new MyEmail($user->username , $verificationCode));
+
         } catch (\Throwable $th) {
             throw $th;
         }
