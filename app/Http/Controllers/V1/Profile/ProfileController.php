@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Profile\UpdatePasswordrequest;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Http\Resources\Profile\ShowProfileResource;
 use App\Models\User;
@@ -42,5 +43,21 @@ class ProfileController extends Controller
         }
 
         return response()->json(['message' => __('messages.user.profile.update.failed')], 500);
+    }
+
+    public function changePassword(UpdatePasswordrequest $request){
+        
+        $user = Auth::id();
+        
+        if (! $user) {
+            return 'عدم دسترسی کاربر';
+        }
+        
+        $error = $this->profielRepo->changePassword($request);
+        if ($error === null) {
+            return response()->json(['message' => __('messages.user.password.update.success')], 200);
+        }
+
+        return response()->json(['message' => __('messages.user.password.update.failed')], 500);
     }
 }

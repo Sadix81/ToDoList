@@ -37,4 +37,18 @@ class ProfileRepository implements ProfileRepositoryInterface
             throw $th;
         }
     }
+
+    public function changePassword($request){
+
+        $user = Auth::user();
+        
+        try {
+            $user->update([
+                'password' => $request->password
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }
