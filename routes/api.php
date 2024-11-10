@@ -17,6 +17,7 @@ Route::prefix('v1/user/')->group(function () {
 
     Route::get('profile/show', [ProfileController::class, 'show']);
     Route::post('profile/update/{user}', [ProfileController::class, 'update']);
+    Route::patch('change/password', [ProfileController::class, 'changePassword']);
 });
 
 Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
