@@ -5,8 +5,8 @@ namespace App\Repositories\Auth;
 use App\Mail\MyEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-
 class AuthRepository implements AuthRepositoryInterface
 {
     public function register($request)
@@ -21,6 +21,11 @@ class AuthRepository implements AuthRepositoryInterface
             ]);
             
             $verificationCode  = rand(11111 , 99999);
+            session(['verificationCode' => $verificationCode]);
+            session(['user' => $user->id]);
+
+            // Log::info(session()->all());
+
             Mail::to($user->email)->send(new MyEmail($user->username , $verificationCode));
 
         } catch (\Throwable $th) {
