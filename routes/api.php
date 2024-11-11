@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1/user/')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/verify/code' , [AuthController::class, 'check_verify_code']);
 })->middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -19,6 +20,8 @@ Route::prefix('v1/user/')->group(function () {
     Route::post('profile/update/{user}', [ProfileController::class, 'update']);
     Route::patch('change/password', [ProfileController::class, 'changePassword']);
 });
+// Route::post('/verifi/code', [AuthController::class, 'check_verify_code']);
+
 
 Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
     Route::resource('/', TaskController::class)->parameters(['' => 'task']);
