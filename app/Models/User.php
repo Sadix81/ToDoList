@@ -28,6 +28,7 @@ class User extends Authenticatable
         'avatar',
         'password',
         'confirm_code',
+        'email_verified_at',
     ];
 
     /**
