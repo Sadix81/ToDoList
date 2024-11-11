@@ -47,12 +47,22 @@ class ProfileController extends Controller
 
     public function changePassword(UpdatePasswordrequest $request){
         
-        $user = Auth::id();
+        $user = Auth::user();
         
         if (! $user) {
             return 'عدم دسترسی کاربر';
         }
-        
+
+        //check if our current pass is correct or nou
+        if (! password_verify($request->currentpassword, $user->password)) {
+            return 'رمز وارد شده نادرست است';
+        }
+
+        // check if the new password isnt similar with current one
+        if ($request->newpassword === $request->currentpassword) {
+            return 'رمز جدید باید متفاوت از پسورد فعلی باشد';
+        }
+
         $error = $this->profielRepo->changePassword($request);
         if ($error === null) {
             return response()->json(['message' => __('messages.user.password.update.success')], 200);

@@ -31,7 +31,6 @@ class ProfileRepository implements ProfileRepositoryInterface
                 'email' => $request->email ?? $user->email,
                 'mobile' => $request->mobile ?? $user->mobile,
                 'avatar' => $profile_image,
-                // 'password' => $request->password ? $request->password : $user->password,
             ]);
         } catch (\Throwable $th) {
             throw $th;
@@ -44,7 +43,7 @@ class ProfileRepository implements ProfileRepositoryInterface
         
         try {
             $user->update([
-                'password' => $request->password
+                'password' => password_hash($request->newpassword, PASSWORD_DEFAULT),
             ]);
         } catch (\Throwable $th) {
             throw $th;
