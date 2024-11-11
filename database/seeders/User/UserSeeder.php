@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'email' => 'admin@gmail.com',
             'mobile' => '12345678901',
-            'password' => password_hash('admin123', PASSWORD_DEFAULT),
+            'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
         ]);
     }
 }
