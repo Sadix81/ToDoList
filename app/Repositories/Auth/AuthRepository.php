@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Auth;
 
-use App\Mail\MyEmail;
+use App\Mail\Register\EmailValidation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -24,9 +24,13 @@ class AuthRepository implements AuthRepositoryInterface
             session(['verificationCode' => $verificationCode]);
             session(['user' => $user->id]);
 
-            // Log::info(session()->all());
-
-            Mail::to($user->email)->send(new MyEmail($user->username , $verificationCode));
+            $verificationCode = session('verificationCode');
+            $userId = session('user');
+            Log::info('Session Data:', [
+                'verificationCode' => $verificationCode,
+                'user' => $userId,
+            ]);
+            Mail::to($user->email)->send(new EmailValidation($user->username , $verificationCode));
 
         } catch (\Throwable $th) {
             throw $th;
