@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Register;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class MyEmail extends Mailable
+class EmailValidation extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,7 +28,7 @@ class MyEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'My Email',
+            subject: 'Email Verification',
         );
     }
 
@@ -38,7 +38,7 @@ class MyEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.email',
+            view: 'mail.EmailVerification',
             with: [
                 'name' => $this->name,
                 'code' => $this->code
