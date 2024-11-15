@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\Auth\AuthRepository;
 use App\Repositories\Auth\AuthRepositoryInterface;
+use App\Repositories\ForgotPassword\ForgotPasswordRepository;
+use App\Repositories\ForgotPassword\ForgotpasswordRepositoryInterface;
 use App\Repositories\Group\GroupRepository;
 use App\Repositories\Group\GroupRepositoryInterface;
 use App\Repositories\Note\NoteRepository;
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(GroupRepositoryInterface::class, GroupRepository::class);
         $this->app->bind(NoteRepositoryInterface::class, NoteRepository::class);
         $this->app->bind(SubtaskRepositoryInterface::class, SubtaskRepository::class);
+        $this->app->bind(ForgotpasswordRepositoryInterface::class, ForgotPasswordRepository::class);
     }
 
     /**

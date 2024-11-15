@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\V1\Auth\AuthController;
 use App\Http\Controllers\V1\Category\CategoryController;
+use App\Http\Controllers\V1\ForgotPassword\ForgotPasswordController;
 use App\Http\Controllers\V1\Group\GroupController;
 use App\Http\Controllers\V1\Note\NoteController;
 use App\Http\Controllers\V1\Profile\ProfileController;
@@ -13,6 +14,9 @@ Route::prefix('v1/user/')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/verify/code' , [AuthController::class, 'check_verify_code']);
+    Route::post('/forgot/password' , [ForgotPasswordController::class, 'forgotpassword']);
+    Route::post('/verify/otp' , [ForgotPasswordController::class, 'check_otp_code']);
+    Route::post('/change/password' , [ForgotPasswordController::class, 'ChangePassword']);
 })->middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -20,7 +24,6 @@ Route::prefix('v1/user/')->group(function () {
     Route::post('profile/update/{user}', [ProfileController::class, 'update']);
     Route::patch('change/password', [ProfileController::class, 'changePassword']);
 });
-// Route::post('/verifi/code', [AuthController::class, 'check_verify_code']);
 
 
 Route::prefix('v1/task/')->middleware('auth:api')->group(function () {
