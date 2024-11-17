@@ -9,7 +9,8 @@ class UpdateTaskRequest extends FormRequest
 {
     public function rules(): array
     {
-        $ownerId = $this->user()->id; // Get the ID of the authenticated user
+         // Get the ID of the authenticated user
+        $ownerId = $this->user()->id;
 
         return [
             'title' => ['required','string','max:100',Rule::unique('tasks')->where(function ($query) use ($ownerId) {
