@@ -12,7 +12,6 @@ class UpdateTaskRequest extends FormRequest
         $ownerId = $this->user()->id; // Get the ID of the authenticated user
 
         return [
-            // Ignore the current task being updated
             'title' => ['required','string','max:100',Rule::unique('tasks')->where(function ($query) use ($ownerId) {
                     return $query->where('owner_id', $ownerId);
                 })->ignore($this->task) 
