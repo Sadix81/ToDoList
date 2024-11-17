@@ -9,7 +9,7 @@ class CreateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:100', 'unique:tasks,title'],
+            'title' => ['required', 'string', 'max:100'],
             'priority' => ['required', 'in:1,2,3'],
             'description' => ['nullable', 'string', 'max:255'],
             'started_at' => ['nullable', 'date'],

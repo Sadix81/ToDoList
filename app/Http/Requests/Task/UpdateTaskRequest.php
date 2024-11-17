@@ -9,8 +9,14 @@ class UpdateTaskRequest extends FormRequest
 {
     public function rules(): array
     {
+        $ownerId = $this->user()->id; // Get the ID of the authenticated user
+
         return [
-            'title' => ['required', 'string', 'max:100', Rule::unique('tasks')->ignore($this->task)], //unique
+            // Ignore the current task being updated
+            'title' => ['required','string','max:100',Rule::unique('tasks')->where(function ($query) use ($ownerId) {
+                    return $query->where('owner_id', $ownerId);
+                })->ignore($this->task) 
+            ],
             'priority' => ['required', 'in:1,2,3,4'],
             'description' => ['nullable', 'string', 'max:255'],
             'started_at' => ['nullable', 'date'],
