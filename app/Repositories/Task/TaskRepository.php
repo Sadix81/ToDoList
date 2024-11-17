@@ -77,7 +77,7 @@ class TaskRepository implements TaskRepositoryInterface
         try {
             $task = Task::create([
                 'owner_id' => $request->owner_id ?: $owner_id,
-                'user_id' => $request->user_id,
+                // 'user_id' => $request->user_id,
                 'group_id' => $request->group_id,
                 'title' => $request->title,
                 'description' => $request->description,
@@ -118,7 +118,7 @@ class TaskRepository implements TaskRepositoryInterface
 
             $task->update([
                 'owner_id' => $request->owner_id ?: $user->id,
-                'user_id' => $request->user_id,
+                // 'user_id' => $request->user_id,
                 'group_id' => $request->group_id,
                 'title' => $request->title,
                 'description' => $request->description,

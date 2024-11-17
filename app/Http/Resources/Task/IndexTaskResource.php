@@ -12,7 +12,7 @@ class IndexTaskResource extends JsonResource
         return [
             'id' => $this->id,
             'owner_id' => $this->owner_id,
-            'user_id' => $this->user_id,
+            // 'user_id' => $this->user_id,
             'group_id' => $this->group_id,
             'title' => $this->title,
             'description' => $this->description,
