@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('owner_id')->constrained('users')->cascadeOnUpdate();
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnUpdate();
+            // $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnUpdate();
             $table->foreignId('group_id')->nullable()->constrained('groups')->cascadeOnUpdate();
             $table->string('title');
             $table->string('description')->nullable();
