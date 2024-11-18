@@ -10,8 +10,8 @@ class CreateGroupRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:50' , 'unique:groups,name'],
-            'user_id' => ['nullable', 'array'],
-            'user_id.*' => ['nullable', 'exists:users,id', 'integer', 'gt:0'],
+            'username' => ['nullable', 'array'],
+            'username.*' => ['nullable', 'exists:users,username', 'string'],
         ];
     }
 }
