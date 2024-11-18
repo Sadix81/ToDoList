@@ -34,7 +34,7 @@ class AuthController extends Controller
         $userId = session('user');
         // dd($sessionCode, $userId);
         // dd((int)$request->code , $sessionCode);
-        if($sessionCode !== (int)$request->code){
+        if($sessionCode !== $request->code){
             return 'کد نادرست است';
         }
 
