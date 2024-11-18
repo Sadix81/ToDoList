@@ -2,7 +2,7 @@
 
 namespace App\Repositories\ForgotPassword;
 
-interface ForgotpasswordRepositoryInterface{
+interface ForgotPasswordRepositoryInterface {
     
     public function password($request);
 
