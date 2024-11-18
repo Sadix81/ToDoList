@@ -33,8 +33,8 @@ class AuthController extends Controller
         $sessionCode = session('verificationCode');
         $userId = session('user');
         // dd($sessionCode, $userId);
-        // dd((int)$request->code , $sessionCode);
-        if($sessionCode !== $request->code){
+        // dd($request->code , $sessionCode);
+        if($sessionCode != $request->code){
             return 'کد نادرست است';
         }
 
