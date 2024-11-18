@@ -37,8 +37,8 @@ class GroupController extends Controller
         if (! $user) {
             return 'عدم دسترسی';
         }
-        // dd($request->all());
-        if(count($request->user_id) >= 5){
+        
+        if(count($request->username) >= 5){
             return response()->json(['message' => 'مجاز به اضافه کردن 4 نفر هستید']);
         }
 

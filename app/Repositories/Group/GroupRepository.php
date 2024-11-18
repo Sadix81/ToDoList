@@ -3,6 +3,7 @@
 namespace App\Repositories\Group;
 
 use App\Models\Group\Group;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -34,6 +35,7 @@ class GroupRepository implements GroupRepositoryInterface
     public function store($request)
     {
         $auth = Auth::id();
+        $usernames = $request->input('username', []); 
 
         DB::beginTransaction();
         try {
@@ -41,8 +43,14 @@ class GroupRepository implements GroupRepositoryInterface
                 'name' => $request->name,
                 'owner_id' => $request->owner_id ?: $auth,
             ]);
-            if (request()->has('user_id')) {
-                $group->users()->attach($request->user_id);
+            if (!empty($usernames)) {
+                foreach ($usernames as $username) {
+                    $members = User::where('username', $username)->get();
+    
+                    foreach ($members as $member) {
+                        $group->users()->attach($member->id);
+                    }
+                }
             }
             DB::commit();
         } catch (\Throwable $th) {
@@ -60,8 +68,19 @@ class GroupRepository implements GroupRepositoryInterface
                 'name' => $request->name,
                 'owner_id' => $owner,
             ]);
-            if (request()->has('user_id')) {
-                $group->users()->sync($request->user_id);
+
+        
+            if ($request->has('username')) {
+                $usernames = $request->input('username', []); 
+
+                $members = User::whereIn('username', $usernames)->get();
+    
+                $existingUserIds = $group->users()->pluck('users.id')->toArray();
+    
+                $newUserIds = $members->pluck('id')->toArray();
+                $allUserIds = array_unique(array_merge($existingUserIds, $newUserIds));
+    
+                $group->users()->sync($allUserIds);
             }
             DB::commit();
         } catch (\Throwable $th) {
