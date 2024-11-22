@@ -8,6 +8,7 @@ use App\Http\Controllers\V1\Note\NoteController;
 use App\Http\Controllers\V1\Profile\ProfileController;
 use App\Http\Controllers\V1\SubTask\SubtaskController;
 use App\Http\Controllers\V1\Task\TaskController;
+use App\Http\Controllers\V1\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1/user/')->group(function () {
@@ -23,6 +24,8 @@ Route::prefix('v1/user/')->group(function () {
     Route::get('profile/show', [ProfileController::class, 'show']);
     Route::post('profile/update/{user}', [ProfileController::class, 'update']);
     Route::patch('change/password', [ProfileController::class, 'changePassword']);
+    Route::get('/search/user', [UserController::class , 'user_list']);
+
 });
 
 
@@ -54,4 +57,5 @@ Route::prefix('/v1/note')->middleware('auth:api')->group(function () {
 
 Route::prefix('/v1/group')->middleware('auth:api')->group(function () {
     Route::resource('/', GroupController::class)->parameters(['' => 'group']);
+    Route::patch('/detach/user/{group}', [GroupController::class , 'detached_role']);
 });
