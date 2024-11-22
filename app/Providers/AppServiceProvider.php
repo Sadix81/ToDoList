@@ -15,8 +15,11 @@ use App\Repositories\Subtask\SubtaskRepository;
 use App\Repositories\Subtask\SubtaskRepositoryInterface;
 use App\Repositories\Task\TaskRepository;
 use App\Repositories\Task\TaskRepositoryInterface;
+use App\Repositories\User\UserRepository;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(NoteRepositoryInterface::class, NoteRepository::class);
         $this->app->bind(SubtaskRepositoryInterface::class, SubtaskRepository::class);
         $this->app->bind(ForgotPasswordRepositoryInterface::class, ForgotPasswordRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**
@@ -41,5 +45,9 @@ class AppServiceProvider extends ServiceProvider
         $token_expire_token_time = (int) env('SESSION_LIFETIME', '60');
         $token_expire_token_time = $token_expire_token_time ? $token_expire_token_time : 60;
         Passport::personalAccessTokensExpireIn(now()->addDays($token_expire_token_time));
+
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('sysAdmin') ? true : null;
+        });
     }
 }
