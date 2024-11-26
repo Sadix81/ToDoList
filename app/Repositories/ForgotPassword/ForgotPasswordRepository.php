@@ -3,7 +3,9 @@
 namespace App\Repositories\ForgotPassword;
 
 use App\Mail\Password\ForgotPassword as PasswordForgotPassword;
+use App\Models\Otp\Otp;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -16,32 +18,43 @@ class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface{
         $user = User::where('email' , $user_email)->first();
 
         if(! $user){
-            return 'کاربر مورد نظر وجود ندارد';
+            return response()->json(['message' =>  'کاربر مورد نظر وجود ندارد']);
         }
-
-        $otp = rand(1111 , 9999);
         
-        session(['user' => $user->id, 'otp' => $otp]);
-
-        // Log sessions data
-        Log::info('Session Data:', [
-            'user' => $user->id,
+        $otp  = rand(11111 , 99999);
+        $user = User::where('email' , $user->email)->first();
+        $user->otps()->create([
+            'user_id' => $user->id,
             'otp' => $otp,
+            'expire_time' => Carbon::now()->addMinutes(120)
         ]);
+
+        $otps = $user->otps()->select('otp', 'user_id')->latest()->first(); // test for moer than 1 user
+        
+        Log::info("The Forgot Password Code for $user->username " . $user->id . ': ' . $otps);
 
         Mail::to($user->email)->send(new PasswordForgotPassword($user->username , $otp));
         
     }
 
-    public function ChangePassword($request){
-        $userId = session('user');
-        $user = User::where('id' , $userId)->first();
-        // dd($user->password);
+    public function ChangePassword($user , $request){
 
+        $username = $request->username;
+        $user = User::where('username' , $username)->first();
+        // dd($user);
+
+        $user_otp = Otp::where('user_id' , $user->id)->first();
+        // dd($user_otp);
+
+        if($user_otp->expire_time > Carbon::now()->addMinutes(120)){
+            return response()->json(['message' =>  'کد شما منقضی شده است.لطفا مجددا تلاش کنید.']);
+        }
+        
         try {
             $user->update([
                 'password' => password_hash($request->password, PASSWORD_DEFAULT),
             ]);
+            $user_otp->delete();
         } catch (\Throwable $th) {
             throw $th;
         }

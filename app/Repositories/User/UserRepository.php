@@ -8,9 +8,9 @@ class UserRepository implements UserRepositoryInterface
 {
     public function user_list($request){
         try {
-            $username = $request->username;
-            $users = User::when($username, function($query) use ($username) {
-                return $query->where('username', 'like', '%' . $username . '%');
+          
+            $users = User::when(!is_null($request->username), function($query) use($request){
+                $query->where('username', 'like', '%' . $request->username . '%');
             })->get();
             return $users;
         } catch (\Throwable $th) {
