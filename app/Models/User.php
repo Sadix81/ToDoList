@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Group\Group;
+use App\Models\Otp\Otp;
 use App\Models\Subtask\Subtask;
 use App\Models\Task\Task;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,10 +11,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Mockery\Matcher\Subset;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable , HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -68,4 +70,20 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class);
     }
+
+    public function otps()
+    {
+        return $this->hasMany(Otp::class);
+    }
+
+    // public function rolesInGroups()
+    // {
+    //     return $this->groups()->with('users.roles')->get()->map(function ($group) {
+    //         return [
+    //             'group_id' => $group->id,
+    //             'group_name' => $group->name,
+    //             'roles' => $group->users->find($this->id)->roles->pluck('name') // Get the roles for the user in this group
+    //         ];
+    //     });
+    // }
 }

@@ -28,13 +28,13 @@ class UserSeeder extends Seeder
             'email_verified_at' => Carbon::now()
         ]);
 
-        User::create([
-            'fullname' => 'kasra',
-            'username' => 'kasra',
-            'email' => 'zzzzsadra30@gmail.com',
-            'mobile' => '09117322373',
-            'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-            'email_verified_at' => Carbon::now()
-        ]);
+        // User::create([
+        //     'fullname' => 'kasra',
+        //     'username' => 'kasra',
+        //     'email' => 'zzzzsadra30@gmail.com',
+        //     'mobile' => '09117322373',
+        //     'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
+        //     'email_verified_at' => Carbon::now()
+        // ]);
     }
 }

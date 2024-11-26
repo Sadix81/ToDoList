@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Code\RegisterVerificationCodeRequest;
+use App\Models\Otp\Otp;
 use App\Models\User;
 use App\Repositories\Auth\AuthRepository;
+use Illuminate\Support\Carbon;
 
 class AuthController extends Controller
 {
@@ -29,30 +31,26 @@ class AuthController extends Controller
 
     }
 
-    public function check_verify_code(RegisterVerificationCodeRequest $request){
-        $sessionCode = session('verificationCode');
-        $userId = session('user');
-        // dd($sessionCode, $userId);
-        // dd($request->code , $sessionCode);
-        if($sessionCode != $request->code){
-            return 'کد نادرست است';
+    public function verify_otp_code(Otp $otp , RegisterVerificationCodeRequest $request){
+
+        $code = $request->code;
+
+        $otp = Otp::where('otp', $code)
+        ->where('expire_time', '>', Carbon::now())
+        ->first();
+
+        $user = User::find($otp->user_id);
+
+        if($request->code != $otp->otp){
+            return response()->json(['message' => 'کد نادرست است'], 404);
         }
 
-        if(! $userId){
-            return 'یوزر پیدا نشده';
+        if($request->code == $otp->otp){                
+            $user->update(['email_verified_at' => Carbon::now()]);
+            $otp->delete();
+            return response()->json(['message' => __('code.verified.successfully.')], 200);
         }
-
-        $user = User::find($userId);
-        if ($user) {
-            $user->email_verified_at = now();
-            $user->save();
-
-            session()->forget(['verificationCode', 'user']);
-                
-                return response()->json(['message' => __('email.verified.successfully.')], 200);
-            }
-        
-        return response()->json(['message' => __('email.verified.failed.')], 404);
+        return response()->json(['message' => __('code.verified.failed.')], 404);
     }
 
     public function login(LoginRequest $request)
