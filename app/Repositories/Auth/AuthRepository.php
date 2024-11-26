@@ -3,7 +3,9 @@
 namespace App\Repositories\Auth;
 
 use App\Mail\Register\EmailValidation;
+use App\Models\Otp\Otp;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -20,17 +22,18 @@ class AuthRepository implements AuthRepositoryInterface
                 'password' => password_hash($request->password, PASSWORD_DEFAULT),
             ]);
             
-            $verificationCode  = rand(11111 , 99999);
-            session(['verificationCode' => $verificationCode]);
-            session(['user' => $user->id]);
-
-            $verificationCode = session('verificationCode');
-            $userId = session('user');
-            Log::info('Session Data:', [
-                'verificationCode' => $verificationCode,
-                'user' => $userId,
+            $otp  = rand(11111 , 99999);
+            $user = User::where('email' , $user->email)->first();
+            $user->otps()->create([
+                'user_id' => $user->id,
+                'otp' => $otp,
+                'expire_time' => Carbon::now()->addMinutes(120)
             ]);
-            Mail::to($user->email)->send(new EmailValidation($user->username , $verificationCode));
+
+            $otps = $user->otps()->select('otp', 'user_id')->get();
+
+            Log::info('Email validation Code for ' . $user->id . ': ' . $otps->toJson());
+            Mail::to($user->email)->send(new EmailValidation($user->username , $otp));
 
         } catch (\Throwable $th) {
             throw $th;

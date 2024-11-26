@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1/user/')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/verify/code' , [AuthController::class, 'check_verify_code']);
+    Route::post('/verify/code' , [AuthController::class, 'verify_otp_code']);
     Route::post('/forgot/password' , [ForgotPasswordController::class, 'forgotpassword']);
-    Route::post('/verify/otp' , [ForgotPasswordController::class, 'check_otp_code']);
+    Route::post('password/verify/code' , [ForgotPasswordController::class, 'verify_password_otp_code']);
     Route::post('/change/password' , [ForgotPasswordController::class, 'ChangePassword']);
 })->middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
