@@ -9,6 +9,8 @@ interface GroupRepositoryInterface
     public function store($request);
 
     public function update($group, $request);
-
+    
     public function delete($group);
+
+    public function detached_user($group, $request);
 }

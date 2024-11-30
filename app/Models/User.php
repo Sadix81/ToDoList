@@ -6,6 +6,7 @@ use App\Models\Group\Group;
 use App\Models\Otp\Otp;
 use App\Models\Subtask\Subtask;
 use App\Models\Task\Task;
+use App\Models\UserRole\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -76,14 +77,8 @@ class User extends Authenticatable
         return $this->hasMany(Otp::class);
     }
 
-    // public function rolesInGroups()
-    // {
-    //     return $this->groups()->with('users.roles')->get()->map(function ($group) {
-    //         return [
-    //             'group_id' => $group->id,
-    //             'group_name' => $group->name,
-    //             'roles' => $group->users->find($this->id)->roles->pluck('name') // Get the roles for the user in this group
-    //         ];
-    //     });
-    // }
+    public function user_role()//pivot table between uers and groups
+    {
+        return $this->hasMany(UserRole::class);
+    }
 }

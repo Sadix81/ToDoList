@@ -57,5 +57,5 @@ Route::prefix('/v1/note')->middleware('auth:api')->group(function () {
 
 Route::prefix('/v1/group')->middleware('auth:api')->group(function () {
     Route::resource('/', GroupController::class)->parameters(['' => 'group']);
-    Route::patch('/detach/user/{group}', [GroupController::class , 'detached_role']);
+    Route::patch('/detach/user/{group}', [GroupController::class , 'detached_user']);
 });

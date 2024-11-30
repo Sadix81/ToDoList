@@ -4,6 +4,7 @@ namespace App\Models\Group;
 
 use App\Models\Task\Task;
 use App\Models\User;
+use App\Models\UserRole\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,10 @@ class Group extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function userRoles()//pivot table between uers and groups
+    {
+        return $this->hasMany(UserRole::class);
     }
 }
