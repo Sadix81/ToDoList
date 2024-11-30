@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Group;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Group\CreateGroupRequest;
+use App\Http\Requests\Group\DetachUserRequest;
 use App\Http\Requests\Group\UpdateGroupRequest;
 use App\Http\Resources\Group\IndexGroupResource;
 use App\Http\Resources\Group\ShowGroupResource;
@@ -38,8 +39,11 @@ class GroupController extends Controller
             return 'عدم دسترسی';
         }
         
-        if(count($request->username) >= 5){
-            return response()->json(['message' => 'مجاز به اضافه کردن 4 نفر هستید']);
+        if ($request->has('username') && is_array($request->username)) {
+            $count = count($request->username);
+            if ($count >= 5) {
+                return response()->json(['message' => 'مجاز به اضافه کردن 4 نفر هستید'], 400); // 400 Bad Request
+            }
         }
 
         $error = $this->groupRepo->store($request);
@@ -61,17 +65,26 @@ class GroupController extends Controller
     }
 
     public function update(Group $group , UpdateGroupRequest $request){
-        $auth = Auth::id();
+        $auth = Auth::user();
+        $group_owner = $group->owner_id;
 
         if (! $auth) {
             return 'عدم دسترسی';
         }
 
+        if ($auth->id !== $group_owner) {
+            return 'عدم دسترسی به گروه مورد نظر';
+        }
+
+        // if(!$auth->hasRole('admin') && !$auth->hasRole('SuperAdmin')){
+        //     return response()->json(['error' => '...عدم دسترسی'], 403);
+        // }
+
         // Check the users of the group
-        $groupUsers = $group->users()->get()->pluck('id');
+        $groupUsers = $group->userRoles()->get()->pluck('id');
         $allUsers = $groupUsers; //containe all users from the group which we find it
-        $allUsers[] = $auth;
-        if(count($allUsers) > 6){
+        $allUsers[] = $auth->id;
+        if(count($allUsers) >= 5){
             return response()->json(['message' => 'تکمیل ظرفیت گروه']);
         }
 
@@ -84,11 +97,51 @@ class GroupController extends Controller
     }
 
     public function destroy(Group $group){
+        $auth = Auth::user();
+        $group_owner = $group->owner_id;
+
+        if (! $auth) {
+            return 'عدم دسترسی';
+        }
+
+        if ($auth->id != $group_owner) {
+            return 'عدم دسترسی به گروه مورد نظر';
+        }
+
+
         $error = $this->groupRepo->delete($group);
         if ($error === null) {
             return response()->json(['message' => __('messages.group.delete.success')], 200);
         }
         return response()->json(['message' => __('messages.group.delete.failed')], 500);
+
+    }
+
+    public function detached_user(Group $group , DetachUserRequest $request){
+        $auth = Auth::user();
+        $group_owner = $group->owner_id;
+
+        if (! $auth) {
+            return 'عدم دسترسی';
+        }
+
+        if ($auth->id !== $group_owner) {
+            return 'عدم دسترسی به گروه مورد نظر';
+        }
+
+        // if(!$auth->hasRole('admin') && !$auth->hasRole('sysAdmin')){
+        //     return response()->json(['error' => '...عدم دسترسی'], 403);
+        // }
+
+        if (in_array($auth->username, $request->username)) {
+            return response()->json(['error' => 'آدمین نمیتواند خود را حدف کند'], 403); // Admin cannot remove themselves
+        }
+
+        $error = $this->groupRepo->detached_user($group , $request);
+        if ($error === null) {
+            return response()->json(['message' => __('messages.user.remove.success')], 200);
+        }
+        return response()->json(['message' => __('messages.user.remove.failed')], 500);
 
     }
 

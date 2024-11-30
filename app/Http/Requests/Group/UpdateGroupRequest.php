@@ -10,7 +10,7 @@ class UpdateGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:50', Rule::unique('groups')->ignore($this->group)],
+            'name' => ['required', 'string', 'max:50'],
             'username' => ['nullable', 'array'],
             'username.*' => ['nullable', 'exists:users,username', 'string'],
         ];
