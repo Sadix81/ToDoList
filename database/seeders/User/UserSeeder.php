@@ -28,13 +28,40 @@ class UserSeeder extends Seeder
             'email_verified_at' => Carbon::now()
         ]);
 
-        // User::create([
-        //     'fullname' => 'kasra',
-        //     'username' => 'kasra',
-        //     'email' => 'zzzzsadra30@gmail.com',
-        //     'mobile' => '09117322373',
-        //     'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-        //     'email_verified_at' => Carbon::now()
-        // ]);
+        User::create([
+            'fullname' => 'kasra',
+            'username' => 'kasra',
+            'email' => 'zzzzsadra30@gmail.com',
+            'mobile' => '09117322373',
+            'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
+            'email_verified_at' => Carbon::now()
+        ]);
+
+        User::create([
+            'fullname' => 'arvin',
+            'username' => 'arvin',
+            'email' => 'arvin@gmail.com',
+            'mobile' => '09117322375',
+            'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
+            'email_verified_at' => Carbon::now()
+        ]);
+
+        User::create([
+            'fullname' => 'ashkan',
+            'username' => 'ashkan',
+            'email' => 'ashkan@gmail.com',
+            'mobile' => '09117322355',
+            'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
+            'email_verified_at' => Carbon::now()
+        ]);
+
+        User::create([
+            'fullname' => 'arash',
+            'username' => 'arash',
+            'email' => 'arash@gmail.com',
+            'mobile' => '09117324473',
+            'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
+            'email_verified_at' => Carbon::now()
+        ]);
     }
 }
