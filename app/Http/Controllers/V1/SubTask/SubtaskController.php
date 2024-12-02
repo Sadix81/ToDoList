@@ -34,15 +34,15 @@ class SubtaskController extends Controller
         $group = $task->group_id;
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if(! $task){
-            return 'تسکی یافت نشد';
+            return response()->json(['message' => 'تسکی یافت نشد']);
         }
 
         if($group === null && $request->user_id !== null){
-            return 'تسک به گروهی وابسته نیست';
+            return response()->json(['message' => 'تسک به گروهی وابسته نیست']);
         }
 
         if($group){
@@ -57,11 +57,11 @@ class SubtaskController extends Controller
         }
 
         if($group && $request->user_id === null){
-            return 'ساب تسک باید به شخصی واگذار شود';
+            return response()->json(['message' => 'ساب تسک باید به شخصی واگذار شود']);
         }
 
         if($group && (! $allUsers->contains($request->user_id))){
-            return 'کاربر مورد نظر یافت نشد';
+            return response()->json(['message' => 'کاربر مورد نظر یافت نشد']);
         }
 
         $error = $this->subTask->store($task , $request);
@@ -78,15 +78,15 @@ class SubtaskController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if(! $subtask){
-            return 'موردی یافت نشد';
+            return response()->json(['message' => 'موردی یافت نشد']);
         }
 
         if($task->id && ($subtask->task_id !== $task->id)){
-            return 'تسک مورد نظر یافت نشد';
+            return response()->json(['message' => 'تسک مورد نظر یافت نشد']);
         }
 
         return new ShowSubtaskResource($subtask);
@@ -98,23 +98,23 @@ class SubtaskController extends Controller
         $group = $task->group_id;
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if(! $task){
-            return 'تسکی یافت نشد';
+            return response()->json(['message' => 'تسکی یافت نشد']);
         }
 
         if(! $subtask){
-            return 'موردی یافت نشد';
+            return response()->json(['message' => 'موردی یافت نشد']);
         }
 
         if($task->id && ($subtask->task_id !== $task->id)){
-            return 'تسک مورد نظر یافت نشد';
+            return response()->json(['message' => 'تسک مورد نظر یافت نشد']);
         }
 
         if($group === null && $request->user_id !== null){
-            return 'تسک به گروهی وابسته نیست';
+            return response()->json(['message' => 'تسک به گروهی وابسته نیست']);
         }
 
         if($group){
@@ -129,11 +129,11 @@ class SubtaskController extends Controller
         }
 
         if($group && $request->user_id === null){
-            return 'تسک باید به شخصی واگذار شود';
+            return response()->json(['message' => 'تسک باید به شخصی واگذار شود']);
         }
 
         if($group && (! $allUsers->contains($request->user_id))){
-            return 'کاربر مورد نظر یافت نشد';
+            return response()->json(['message' => 'کاربر مورد نظر یافت نشد']);
         }
 
         
@@ -150,19 +150,19 @@ class SubtaskController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if(! $task){
-            return 'تسکی یافت نشد';
+            return response()->json(['message' => 'تسکی یافت نشد']);
         }
 
         if(! $subtask){
-            return 'موردی یافت نشد';
+            return response()->json(['message' => 'موردی یافت نشد']);
         }
 
         if($task->id && ($subtask->task_id !== $task->id)){
-            return 'تسک مورد نظر یافت نشد';
+            return response()->json(['message' => 'تسک مورد نظر یافت نشد']);
         }
 
         $error = $this->subTask->closeStatus($task , $subtask);
@@ -178,19 +178,19 @@ class SubtaskController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
         
         if(! $task){
-            return 'تسکی یافت نشد';
+            return response()->json(['message' => 'تسکی یافت نشد']);
         }
 
         if(! $subtask){
-            return 'موردی یافت نشد';
+            return response()->json(['message' => 'موردی یافت نشد']);
         }
         
         if($task->id && ($subtask->task_id !== $task->id)){
-            return 'تسک مورد نظر یافت نشد';
+            return response()->json(['message' => 'تسک مورد نظر یافت نشد']);
         }
 
         $error = $this->subTask->delete($task , $subtask);

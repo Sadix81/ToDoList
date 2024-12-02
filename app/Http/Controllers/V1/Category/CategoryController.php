@@ -25,7 +25,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         return IndexCategoryResource::collection($this->categoryRepo->index());
@@ -36,7 +36,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         $error = $this->categoryRepo->store($request);
@@ -53,7 +53,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         return new ShowCategoryResource($category);
@@ -65,7 +65,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         $error = $this->categoryRepo->update($category, $request);
@@ -81,7 +81,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         $error = $this->categoryRepo->delete($category);

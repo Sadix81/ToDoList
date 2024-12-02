@@ -23,7 +23,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
         return new ShowProfileResource($user);
     }
@@ -34,7 +34,7 @@ class ProfileController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return 'عدم دسترسی کاربر';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         $error = $this->profielRepo->update($user, $request);
@@ -50,17 +50,17 @@ class ProfileController extends Controller
         $user = Auth::user();
         
         if (! $user) {
-            return 'عدم دسترسی کاربر';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         //check if our current pass is correct or nou
         if (! password_verify($request->currentpassword, $user->password)) {
-            return 'رمز وارد شده نادرست است';
+            return response()->json(['message' => 'رمز وارد شده نادرست است']);
         }
 
         // check if the new password isnt similar with current one
         if ($request->newpassword === $request->currentpassword) {
-            return 'رمز جدید باید متفاوت از پسورد فعلی باشد';
+            return response()->json(['message' => 'رمز جدید باید متفاوت از پسورد فعلی باشد']);
         }
 
         $error = $this->profielRepo->changePassword($request);
