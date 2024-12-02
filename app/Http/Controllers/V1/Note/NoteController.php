@@ -32,11 +32,11 @@ class NoteController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if(! $task){
-            return 'تسکی یافت نشد';
+            return response()->json(['message' => 'تسکی یافت نشد']);
         }
         
         $error = $this->noteRepo->store($task , $request);
@@ -51,11 +51,11 @@ class NoteController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if(! $note){
-            return 'موردی یافت نشد';
+            return response()->json(['message' => 'موردی یافت نشد']);
         }
 
         if($task->id && ($note->task_id !== $task->id)){
@@ -70,11 +70,11 @@ class NoteController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if(! $note){
-            return 'موردی یافت نشد';
+            return response()->json(['message' => 'موردی یافت نشد']);
         }
 
         if($task->id && ($note->task_id !== $task->id)){
@@ -93,19 +93,19 @@ class NoteController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
         
         if(! $task){
-            return 'تسکی یافت نشد';
+            return response()->json(['message' => 'تسکی یافت نشد']) ;
         }
 
         if(! $note){
-            return 'موردی یافت نشد';
+            return response()->json(['message' => 'موردی یافت نشد']);
         }
         
         if($task->id && ($note->task_id !== $task->id)){
-            return 'تسک مورد نظر یافت نشد';
+            return response()->json(['message' => 'تسک مورد نظر یافت نشد']) ;
         }
     
         $error = $this->noteRepo->delete($task , $note);

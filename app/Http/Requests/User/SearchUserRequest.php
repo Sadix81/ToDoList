@@ -9,7 +9,7 @@ class SearchUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['nullable', 'string' , 'exists:users,username'],
+            'username' => ['nullable', 'string'],
         ];
     }
 }

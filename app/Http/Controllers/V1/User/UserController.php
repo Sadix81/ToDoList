@@ -22,8 +22,9 @@ class UserController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
+
         $users = $this->userRepo->user_list($request);
 
         return SearchUserResource::collection($users);

@@ -26,7 +26,7 @@ class GroupController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         return IndexGroupResource::collection($this->groupRepo->index());
@@ -36,7 +36,7 @@ class GroupController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
         
         if ($request->has('username') && is_array($request->username)) {
@@ -58,7 +58,7 @@ class GroupController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         return new ShowGroupResource($group);
@@ -69,16 +69,12 @@ class GroupController extends Controller
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if ($auth->id !== $group_owner) {
             return 'عدم دسترسی به گروه مورد نظر';
         }
-
-        // if(!$auth->hasRole('admin') && !$auth->hasRole('SuperAdmin')){
-        //     return response()->json(['error' => '...عدم دسترسی'], 403);
-        // }
 
         // Check the users of the group
         $groupUsers = $group->userRoles()->get()->pluck('id');
@@ -101,11 +97,11 @@ class GroupController extends Controller
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if ($auth->id != $group_owner) {
-            return 'عدم دسترسی به گروه مورد نظر';
+            return response()->json(['message' => 'عدم دسترسی به گروه مورد نظر']);
         }
 
 
@@ -122,16 +118,12 @@ class GroupController extends Controller
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         if ($auth->id !== $group_owner) {
-            return 'عدم دسترسی به گروه مورد نظر';
+            return response()->json(['message' => 'عدم دسترسی به گروه مورد نظر']);
         }
-
-        // if(!$auth->hasRole('admin') && !$auth->hasRole('sysAdmin')){
-        //     return response()->json(['error' => '...عدم دسترسی'], 403);
-        // }
 
         if (in_array($auth->username, $request->username)) {
             return response()->json(['error' => 'آدمین نمیتواند خود را حدف کند'], 403); // Admin cannot remove themselves

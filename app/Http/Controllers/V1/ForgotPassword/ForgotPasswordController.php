@@ -6,13 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Code\RegisterVerificationCodeRequest;
 use App\Http\Requests\ForgotPassword\ChangePasswordRequest;
 use App\Http\Requests\ForgotPassword\ForgotPasswordRequest;
-use App\Http\Requests\ForgotPassword\Otp\ForgotPasswordCodeRequest;
 use App\Models\Otp\Otp;
 use App\Models\User;
 use App\Repositories\ForgotPassword\ForgotPasswordRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class ForgotPasswordController extends Controller
 {
@@ -62,11 +59,11 @@ class ForgotPasswordController extends Controller
         }
 
         if (password_verify($request->password, $user->password) || password_verify($request->confirmpassword, $user->password)) {
-            return 'نمیتوان رمز فعلی را انتخاب کرد';
+            return response()->json(['message' => 'نمیتوان رمز فعلی را انتخاب کرد']);
         }
 
         if($request->password !== $request->confirmpassword){
-            return 'یکسان بودن دو مقدار الزامیست';
+            return response()->json(['یکسان بودن دو مقدار الزامیست']);
         }
 
         $error = $this->passRepo->ChangePassword($user , $request);

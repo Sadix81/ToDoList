@@ -27,7 +27,7 @@ class TaskController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         return IndexTaskResource::collection($this->taskrepo->index());
@@ -44,31 +44,12 @@ class TaskController extends Controller
         $group = null;
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
-
-        // if($request->group_id === null && $request->user_id !== null){
-        //     return 'تسک به گروهی وابسته نیست';
-        // }
         
         if($request->group_id !== null){
             $group = Group::find($request->group_id);
         }
-
-        // if($group){
-        //     // Check the users of the group
-        //     $groupUsers = $group->users()->get()->pluck('id');
-        //     $allUsers = $groupUsers; //containe all users from the group which we find it
-        //     $allUsers[] = $auth;
-        // }
-
-        // if($group && $request->user_id === null){
-        //     return 'تسک باید به شخصی واگذار شود';
-        // }
-
-        // if($group && (! $allUsers->contains($request->user_id))){
-        //     return 'کاربر مورد نظر یافت نشد';
-        // }
         
         $error = $this->taskrepo->store($request);
 
@@ -84,7 +65,7 @@ class TaskController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
         return new ShowTaskResource($task);
@@ -96,31 +77,12 @@ class TaskController extends Controller
         $group = $task->group_id;
 
         if (! $auth) {
-            return 'عدم دسترسی';
+            return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
-
-        // if($group === null && $request->user_id !== null){
-        //     return 'تسک به گروهی وابسته نیست';
-        // }
         
         if($group){
             $group = Group::find($task->group_id);
         }
-
-        // if($group){
-        //     // Check the users of the group
-        //     $groupUsers = $group->users()->get()->pluck('id');
-        //     $allUsers = $groupUsers; //containe all users from the group which we find it
-        //     $allUsers[] = $auth;
-        // }
-
-        // if($group && $request->user_id === null){
-        //     return 'تسک باید به شخصی واگذار شود';
-        // }
-
-        // if($group && (! $allUsers->contains($request->user_id))){
-        //     return 'کاربر مورد نظر یافت نشد';
-        // }
 
         $error = $this->taskrepo->update($task, $request);
         if ($error === null) {
