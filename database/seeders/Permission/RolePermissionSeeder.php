@@ -37,13 +37,10 @@ class RolePermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'update_task' , 'guard_name' => 'api']);
         Permission::firstOrCreate(['name' => 'delete_task' , 'guard_name' => 'api']);
 
-        // Permission::firstOrCreate(['name' => 'create_subtask' , 'guard_name' => 'api']);
         Permission::firstOrCreate(['name' => 'show_subtask' , 'guard_name' => 'api']);
         Permission::firstOrCreate(['name' => 'update_subtask' , 'guard_name' => 'api']);
         Permission::firstOrCreate(['name' => 'delete_subtask' , 'guard_name' => 'api']);
 
-        // Permission::firstOrCreate(['name' => 'create_note' , 'guard_name' => 'api']);
-        // Permission::firstOrCreate(['name' => 'show_note' , 'guard_name' => 'api']);
         Permission::firstOrCreate(['name' => 'update_note' , 'guard_name' => 'api']);
         Permission::firstOrCreate(['name' => 'delete_note' , 'guard_name' => 'api']);
 
