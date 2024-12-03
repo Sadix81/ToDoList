@@ -61,6 +61,10 @@ class GroupController extends Controller
             return response()->json(['message' => __('messages.user.Inaccessibility')]);
         }
 
+        if($group->owner_id !== $user){
+            return response()->json([ 'عدم دسترسی به گروه مورد نظر']);
+        }
+
         return new ShowGroupResource($group);
     }
 
@@ -73,7 +77,7 @@ class GroupController extends Controller
         }
 
         if ($auth->id !== $group_owner) {
-            return 'عدم دسترسی به گروه مورد نظر';
+            return response()->json(['message' => 'عدم دسترسی به گروه مورد نظر']);
         }
 
         // Check the users of the group
