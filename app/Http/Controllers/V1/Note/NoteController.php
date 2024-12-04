@@ -76,7 +76,7 @@ class NoteController extends Controller
 
         if($group != null){
             if($auth->id !== $note->user_id && !$auth->hasRole('admin')){
-                return response()->json(['message' => 'عدم دسترسی'] , 404);
+                return response()->json(['message' => 'عدم دسترسی'] , 403);
             }
         }
 
@@ -110,7 +110,7 @@ class NoteController extends Controller
 
         if($group != null){
             if($auth->id !== $note->user_id && !$auth->hasRole('admin')){
-                return response()->json(['message' => 'عدم دسترسی'] , 404);
+                return response()->json(['message' => 'عدم دسترسی'] , 403);
             }
         }
         
