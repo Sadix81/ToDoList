@@ -23,7 +23,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
         return new ShowProfileResource($user);
     }
@@ -34,7 +34,7 @@ class ProfileController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         $error = $this->profielRepo->update($user, $request);
@@ -50,7 +50,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         //check if our current pass is correct or nou
