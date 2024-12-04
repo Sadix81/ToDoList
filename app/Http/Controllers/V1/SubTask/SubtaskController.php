@@ -94,11 +94,17 @@ class SubtaskController extends Controller
 
     public function update(Task $task ,Subtask $subtask, UpdateSubtaskRequest $request)
     {
-        $auth = Auth::id();
+        $auth = Auth::user();
         $group = $task->group_id;
 
-        if (! $auth) {
+        if (! $auth->id) {
             return response()->json(['message' => __('messages.user.Inaccessibility')]);
+        }
+
+        if($group != null){
+            if($auth->id !== $subtask->user_id && !$auth->hasRole('admin')){
+                return response()->json(['message' => 'عدم دسترسی'] , 403);
+            }
         }
 
         if(! $task){
@@ -136,6 +142,9 @@ class SubtaskController extends Controller
             return response()->json(['message' => 'کاربر مورد نظر یافت نشد']);
         }
 
+        if($auth->id !== $subtask->user_id && $auth->id !== $subtask->owner_id){
+            return response()->json(['message' => 'عدم دسترسی کاربر'] , 404);
+        }
         
         $error = $this->subTask->update($task , $subtask, $request);
         if ($error === null) {
@@ -175,10 +184,17 @@ class SubtaskController extends Controller
 
     public function destroy(Task $task , Subtask $subtask)
     {
-        $auth = Auth::id();
+        $auth = Auth::user();
+        $group = $task->group_id;
 
-        if (! $auth) {
+        if (! $auth->id) {
             return response()->json(['message' => __('messages.user.Inaccessibility')]);
+        }
+
+        if($group != null){
+            if($auth->id !== $subtask->user_id && !$auth->hasRole('admin')){
+                return response()->json(['message' => 'عدم دسترسی'] , 403);
+            }
         }
         
         if(! $task){
@@ -191,6 +207,10 @@ class SubtaskController extends Controller
         
         if($task->id && ($subtask->task_id !== $task->id)){
             return response()->json(['message' => 'تسک مورد نظر یافت نشد']);
+        }
+
+        if($auth->id !== $subtask->user_id && $auth->id !== $subtask->owner_id){
+            return response()->json(['message' => 'عدم دسترسی کاربر'] , 404);
         }
 
         $error = $this->subTask->delete($task , $subtask);
