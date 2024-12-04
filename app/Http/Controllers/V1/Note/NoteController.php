@@ -67,10 +67,17 @@ class NoteController extends Controller
 
     public function update(Task $task , Note $note , UpdateNoteRequest $request)
     {
-        $auth = Auth::id();
+        $auth = Auth::user();
+        $group = $task->group_id;
 
-        if (! $auth) {
+        if (! $auth->id) {
             return response()->json(['message' => __('messages.user.Inaccessibility')]);
+        }
+
+        if($group != null){
+            if($auth->id !== $note->user_id && !$auth->hasRole('admin')){
+                return response()->json(['message' => 'عدم دسترسی'] , 404);
+            }
         }
 
         if(! $note){
@@ -79,6 +86,10 @@ class NoteController extends Controller
 
         if($task->id && ($note->task_id !== $task->id)){
             return response()->json(['message' => 'عدم دسترسی'] , 404);
+        }
+
+        if($auth->id !== $note->user_id){
+            return response()->json(['message' => 'عدم دسترسی کاربر'] , 404);
         }
         
         $error = $this->noteRepo->update($task , $note , $request);
@@ -90,10 +101,17 @@ class NoteController extends Controller
 
     public function destroy(Task $task , Note $note)
     {
-        $auth = Auth::id();
+        $auth = Auth::user();
+        $group = $task->group_id;
 
-        if (! $auth) {
+        if (! $auth->id) {
             return response()->json(['message' => __('messages.user.Inaccessibility')]);
+        }
+
+        if($group != null){
+            if($auth->id !== $note->user_id && !$auth->hasRole('admin')){
+                return response()->json(['message' => 'عدم دسترسی'] , 404);
+            }
         }
         
         if(! $task){
@@ -106,6 +124,10 @@ class NoteController extends Controller
         
         if($task->id && ($note->task_id !== $task->id)){
             return response()->json(['message' => 'تسک مورد نظر یافت نشد']) ;
+        }
+
+        if($auth->id !== $note->user_id){
+            return response()->json(['message' => 'عدم دسترسی کاربر'] , 404);
         }
     
         $error = $this->noteRepo->delete($task , $note);
