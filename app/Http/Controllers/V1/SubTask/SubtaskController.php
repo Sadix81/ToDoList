@@ -34,7 +34,7 @@ class SubtaskController extends Controller
         $group = $task->group_id;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if(! $task){
@@ -78,7 +78,7 @@ class SubtaskController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if(! $subtask){
@@ -98,7 +98,7 @@ class SubtaskController extends Controller
         $group = $task->group_id;
 
         if (! $auth->id) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if($group != null){
@@ -159,7 +159,7 @@ class SubtaskController extends Controller
         $auth = Auth::id();
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if(! $task){
@@ -188,7 +188,7 @@ class SubtaskController extends Controller
         $group = $task->group_id;
 
         if (! $auth->id) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if($group != null){

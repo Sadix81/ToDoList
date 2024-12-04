@@ -26,7 +26,7 @@ class GroupController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         return IndexGroupResource::collection($this->groupRepo->index());
@@ -36,7 +36,7 @@ class GroupController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
         
         if ($request->has('username') && is_array($request->username)) {
@@ -58,7 +58,7 @@ class GroupController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if($group->owner_id !== $user){
@@ -73,7 +73,7 @@ class GroupController extends Controller
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if ($auth->id !== $group_owner) {
@@ -101,7 +101,7 @@ class GroupController extends Controller
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if ($auth->id != $group_owner) {
@@ -122,7 +122,7 @@ class GroupController extends Controller
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         if ($auth->id !== $group_owner) {
