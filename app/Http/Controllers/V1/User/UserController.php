@@ -22,7 +22,7 @@ class UserController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')]);
+            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
 
         $users = $this->userRepo->user_list($request);
