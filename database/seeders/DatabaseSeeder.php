@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Database\Seeders\Category\CategorySeeder;
+use Database\Seeders\Group\GroupSeeder;
 use Database\Seeders\Permission\RolePermissionSeeder;
 use Database\Seeders\User\UserSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             CategorySeeder::class,
+            GroupSeeder::class,
             RolePermissionSeeder::class,
         ]);
     }
