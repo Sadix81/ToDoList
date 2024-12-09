@@ -33,9 +33,19 @@ class GroupSeeder extends Seeder
             'owner_id' => 2,
         ]);
 
-        $group1->users()->attach([1, 2 , 3 , 4]);
-        $group2->users()->attach([1 , 3 ,5]);
-        $group3->users()->attach([2 ,4, 5]);
-        $group4->users()->attach([1, 2 , 3]);
+        // $group1->userRoles()->attach([
+        //     ['user_id' => 1, 'role_id' => 2], // Assuming role_id exists
+        //     ['user_id' => 2, 'role_id' => 2],
+        //     ['user_id' => 3, 'role_id' => 3],
+        //     ['user_id' => 4, 'role_id' => 3],
+        // ]);
+        
+        // $group2->userRoles()->attach([
+        //     ['user_id' => 1, 'role_id' => 2],
+        //     ['user_id' => 3, 'role_id' => 3],
+        //     ['user_id' => 5, 'role_id' => 3],
+        // ]);  
+         // $group3->userRoles()->attach([2 ,4, 5]);
+        // $group4->userRoles()->attach([1, 2 , 3]);
     }
 }

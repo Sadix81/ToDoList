@@ -11,8 +11,8 @@ class UpdateGroupRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:50'],
-            'username' => ['nullable', 'array'],
-            'username.*' => ['nullable', 'exists:users,username', 'string'],
+            'user_id' => ['nullable', 'array'],
+            'user_id.*' => ['nullable', 'exists:users,id', 'string'],
         ];
     }
 }
