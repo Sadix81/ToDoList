@@ -38,9 +38,8 @@ class GroupController extends Controller
         if (! $user) {
             return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
         }
-        
-        if ($request->has('username') && is_array($request->username)) {
-            $count = count($request->username);
+        if ($request->has('user_id') && is_array($request->user_id)) {
+            $count = count($request->user_id);
             if ($count >= 5) {
                 return response()->json(['message' => 'مجاز به اضافه کردن 4 نفر هستید'], 400); // 400 Bad Request
             }
@@ -87,7 +86,6 @@ class GroupController extends Controller
         if(count($allUsers) >= 5){
             return response()->json(['message' => 'تکمیل ظرفیت گروه']);
         }
-
         $error = $this->groupRepo->update($group , $request);
         
         if($error === null){
@@ -129,7 +127,7 @@ class GroupController extends Controller
             return response()->json(['message' => 'عدم دسترسی به گروه مورد نظر']);
         }
 
-        if (in_array($auth->username, $request->username)) {
+        if (in_array($auth->id, $request->user_id)) {
             return response()->json(['error' => 'آدمین نمیتواند خود را حدف کند'], 403); // Admin cannot remove themselves
         }
 
