@@ -13,25 +13,25 @@ class GroupSeeder extends Seeder
      */
     public function run(): void
     {
-        $group1 = Group::create([
-            'name' => 'group_1',
-            'owner_id' => 1,
-        ]);
+        // $group1 = Group::create([
+        //     'name' => 'group_1',
+        //     'owner_id' => 1,
+        // ]);
 
-        $group2 = Group::create([
-            'name' => 'group_2',
-            'owner_id' => 1,
-        ]);
+        // $group2 = Group::create([
+        //     'name' => 'group_2',
+        //     'owner_id' => 1,
+        // ]);
 
-        $group3 = Group::create([
-            'name' => 'group_3',
-            'owner_id' => 2,
-        ]);
+        // $group3 = Group::create([
+        //     'name' => 'group_3',
+        //     'owner_id' => 2,
+        // ]);
 
-        $group4 = Group::create([
-            'name' => 'group_4',
-            'owner_id' => 2,
-        ]);
+        // $group4 = Group::create([
+        //     'name' => 'group_4',
+        //     'owner_id' => 2,
+        // ]);
 
         // $group1->userRoles()->attach([
         //     ['user_id' => 1, 'role_id' => 2], // Assuming role_id exists

@@ -9,8 +9,8 @@ class DetachUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'array'],
-            'username.*' => ['required', 'exists:users,username', 'string']
+            'user_id' => ['nullable', 'array'],
+            'user_id.*' => ['nullable', 'exists:users,id', 'string'],
         ];
     }
 }
