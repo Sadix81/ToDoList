@@ -38,7 +38,7 @@ class GroupRepository implements GroupRepositoryInterface
     {
         $userId = Auth::id();
 
-        $usernames = $request->input('username', []); 
+        $usernames = $request->input('user_id', []); 
 
         $adminRole = Role::findByName('admin', 'api');
         $memberRole = Role::findByName('member', 'api');
@@ -57,7 +57,7 @@ class GroupRepository implements GroupRepositoryInterface
             $userRole->save();
 
             foreach($usernames as $member){
-                $userToAdd = User::where('username', $member)->first();
+                $userToAdd = User::where('id', $member)->first();
                 if($userToAdd){
                     $newUserRole = new UserRole();
                     $newUserRole->user_id = $userToAdd->id;
@@ -78,7 +78,7 @@ class GroupRepository implements GroupRepositoryInterface
     public function update($group, $request)
     {
         $owner = Auth::id();
-        $usernames = $request->input('username', []); 
+        $usernames = $request->input('user_id', []); 
         $memberRole = Role::findByName('member', 'api');
 
 
@@ -88,18 +88,17 @@ class GroupRepository implements GroupRepositoryInterface
                 'name' => $request->name,
                 'owner_id' => $owner,
             ]);
-            if ($usernames) {
-                foreach ($usernames as $username) {
-                    $members = User::where('username', $username)->get();
-                    foreach ($members as $member) {
-                        $newUserRole = new UserRole();
-                        $newUserRole->user_id = $member->id;
-                        $newUserRole->group_id = $group->id;
-                        $newUserRole->role_id = $memberRole->id;
-                        $newUserRole->save();
-                    }
+            foreach ($usernames as $username) {
+                $member = User::where('id', $username)->first();
+                if ($member) {
+                    $newUserRole = new UserRole();
+                    $newUserRole->user_id = $member->id;
+                    $newUserRole->group_id = $group->id;
+                    $newUserRole->role_id = $memberRole->id;
+                    $newUserRole->save();
                 }
             }
+            
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -124,7 +123,7 @@ class GroupRepository implements GroupRepositoryInterface
 
     public function detached_user($group , $request){
 
-        $usernames = $request->input('username', []); 
+        $usernames = $request->input('user_id', []); 
 
         DB::beginTransaction();
 
@@ -133,7 +132,7 @@ class GroupRepository implements GroupRepositoryInterface
             $userIds = UserRole::where('group_id', $group->id)->pluck('user_id')->toArray();
     
             foreach ($usernames as $username) {
-                $user = User::where('username', $username)->first();
+                $user = User::where('id', $username)->first();
                 if (!in_array($user->id, $userIds)) {
                     return response()->json(['error' => "کاربر '$username' در گروه یافت نشد"], 404);
                 }
