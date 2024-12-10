@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Code\RegisterVerificationCodeRequest;
+use App\Jobs\Auth\AuthJob;
 use App\Models\Otp\Otp;
 use App\Models\User;
 use App\Repositories\Auth\AuthRepository;
@@ -22,9 +23,11 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $error = $this->authRepo->register($request);
-        if ($error === null) {
-            return response()->json(['message' => 'Registration successful, please check your email for verification code.'] , 201);
+        $user = $this->authRepo->register($request);
+
+        if ($user) {
+            AuthJob::dispatch($user);
+            return response()->json(['message' => 'Registration successful, please check your email for verification code.'], 201);
         }
 
         return response()->json(['message' => __('messages.user.auth.register.failed')], 404);
