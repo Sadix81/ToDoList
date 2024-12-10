@@ -50,12 +50,19 @@ class AuthController extends Controller
             return response()->json(['message' => 'کد نادرست است'], 404);
         }
 
+        if($otp->expire_time === Carbon::now()){
+            return response()->json(['message' => 'کد نامعتبر است.کد جدید ارسال کنید'], 404);
+            $otp->delete();
+        }
+
         if ($request->code == $otp->otp) {
             $user->update(['email_verified_at' => Carbon::now()]);
             $otp->delete();
 
             return response()->json(['message' => __('code.verified.successfully.')], 200);
         }
+
+
 
         return response()->json(['message' => __('code.verified.failed.')], 404);
     }
