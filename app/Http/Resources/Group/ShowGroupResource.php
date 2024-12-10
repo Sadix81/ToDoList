@@ -13,6 +13,12 @@ class ShowGroupResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'owner_id' => $this->owner_id,
-            'user_id' => $this->userRoles()->pluck('user_id')
-        ];    }
+            'users' => $this->userRoles->map(function ($userRole) {
+                return [
+                    'user_id' => $userRole->user_id,
+                    'username' => $userRole->user->username, //using user relation in "userRole" model
+                ];
+            }),
+        ];
+    }
 }
