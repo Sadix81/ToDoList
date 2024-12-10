@@ -13,12 +13,11 @@ class Otp extends Model
     protected $fillable = [
         'otp',
         'expire_time',
-        'user_id'
+        'user_id',
     ];
 
     public function users()
     {
         return $this->belongsTo(User::class);
     }
-
 }

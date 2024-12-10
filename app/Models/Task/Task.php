@@ -39,11 +39,13 @@ class Task extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function notes(){
+    public function notes()
+    {
         return $this->hasMany(Note::class);
     }
 
-    public function subtasks(){
+    public function subtasks()
+    {
         return $this->hasMany(Subtask::class);
     }
 

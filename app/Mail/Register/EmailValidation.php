@@ -3,7 +3,6 @@
 namespace App\Mail\Register;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,9 +13,10 @@ class EmailValidation extends Mailable
     use Queueable, SerializesModels;
 
     private $name;
+
     private $code;
 
-    public function __construct($name , $code)
+    public function __construct($name, $code)
     {
         $this->name = $name;
         $this->code = $code;
@@ -41,8 +41,8 @@ class EmailValidation extends Mailable
             view: 'mail.EmailVerification',
             with: [
                 'name' => $this->name,
-                'code' => $this->code
-                ]
+                'code' => $this->code,
+            ]
         );
     }
 

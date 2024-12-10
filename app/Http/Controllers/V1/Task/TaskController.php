@@ -9,7 +9,6 @@ use App\Http\Resources\Task\IndexTaskResource;
 use App\Http\Resources\Task\ShowTaskResource;
 use App\Models\Group\Group;
 use App\Models\Task\Task;
-use App\Models\User;
 use App\Repositories\Task\TaskRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +26,7 @@ class TaskController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         return IndexTaskResource::collection($this->taskrepo->index());
@@ -44,13 +43,13 @@ class TaskController extends Controller
         $group = null;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
-        
-        if($request->group_id !== null){
+
+        if ($request->group_id !== null) {
             $group = Group::find($request->group_id);
         }
-        
+
         $error = $this->taskrepo->store($request);
 
         if ($error === null) {
@@ -65,7 +64,7 @@ class TaskController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         return new ShowTaskResource($task);
@@ -77,15 +76,14 @@ class TaskController extends Controller
         $group = $task->group_id;
 
         if (! $auth->id) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
-        if($auth->id !== $task->owner_id){
-            return response()->json(['message' => 'عدم دسترسی'] , 403);
+        if ($auth->id !== $task->owner_id) {
+            return response()->json(['message' => 'عدم دسترسی'], 403);
         }
-        
-        
-        if($group){
+
+        if ($group) {
             $group = Group::find($task->group_id);
         }
 
@@ -112,11 +110,11 @@ class TaskController extends Controller
         $auth = Auth::user();
 
         if (! $auth->id) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
-        if($auth->id !== $task->owner_id){
-            return response()->json(['message' => 'عدم دسترسی'] , 403);
+        if ($auth->id !== $task->owner_id) {
+            return response()->json(['message' => 'عدم دسترسی'], 403);
         }
 
         $error = $this->taskrepo->delete($task);

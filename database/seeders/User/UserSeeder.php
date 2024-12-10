@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'mobile' => '12345678901',
             'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-            'email_verified_at' => Carbon::now()
+            'email_verified_at' => Carbon::now(),
         ]);
 
         // User::create([
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'email' => 'zzzzsadra30@gmail.com',
             'mobile' => '09117322373',
             'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-            'email_verified_at' => Carbon::now()
+            'email_verified_at' => Carbon::now(),
         ]);
 
         User::create([
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
             'email' => 'arvin@gmail.com',
             'mobile' => '09117322375',
             'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-            'email_verified_at' => Carbon::now()
+            'email_verified_at' => Carbon::now(),
         ]);
 
         User::create([
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             'email' => 'ashkan@gmail.com',
             'mobile' => '09117322355',
             'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-            'email_verified_at' => Carbon::now()
+            'email_verified_at' => Carbon::now(),
         ]);
 
         User::create([
@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
             'email' => 'arash@gmail.com',
             'mobile' => '09117324473',
             'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-            'email_verified_at' => Carbon::now()
+            'email_verified_at' => Carbon::now(),
         ]);
     }
 }

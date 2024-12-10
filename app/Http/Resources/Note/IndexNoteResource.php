@@ -9,7 +9,7 @@ class IndexNoteResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return[
+        return [
             'id' => $this->id,
             'description' => $this->description,
             'user_id' => $this->user_id,

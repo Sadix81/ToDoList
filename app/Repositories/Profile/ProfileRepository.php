@@ -37,10 +37,11 @@ class ProfileRepository implements ProfileRepositoryInterface
         }
     }
 
-    public function changePassword($request){
+    public function changePassword($request)
+    {
 
         $user = Auth::user();
-        
+
         try {
             $user->update([
                 'password' => password_hash($request->newpassword, PASSWORD_DEFAULT),
@@ -49,5 +50,4 @@ class ProfileRepository implements ProfileRepositoryInterface
             throw $th;
         }
     }
-
 }

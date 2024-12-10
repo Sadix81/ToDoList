@@ -25,7 +25,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         return IndexCategoryResource::collection($this->categoryRepo->index());
@@ -36,7 +36,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         $error = $this->categoryRepo->store($request);
@@ -53,7 +53,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         return new ShowCategoryResource($category);
@@ -65,7 +65,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         $error = $this->categoryRepo->update($category, $request);
@@ -81,7 +81,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         $error = $this->categoryRepo->delete($category);
