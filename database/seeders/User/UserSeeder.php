@@ -19,14 +19,14 @@ class UserSeeder extends Seeder
             'email_verified_at' => Carbon::now()
         ]);
 
-        User::create([
-            'fullname' => 'sadra',
-            'username' => 'sadra',
-            'email' => 'zsadra3@gmail.com',
-            'mobile' => '09033440773',
-            'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
-            'email_verified_at' => Carbon::now()
-        ]);
+        // User::create([
+        //     'fullname' => 'sadra',
+        //     'username' => 'sadra',
+        //     'email' => 'zsadra3@gmail.com',
+        //     'mobile' => '09033440773',
+        //     'password' => password_hash('@Dmin123', PASSWORD_DEFAULT),
+        //     'email_verified_at' => Carbon::now()
+        // ]);
 
         User::create([
             'fullname' => 'kasra',

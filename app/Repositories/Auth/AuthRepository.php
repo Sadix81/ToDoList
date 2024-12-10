@@ -21,22 +21,12 @@ class AuthRepository implements AuthRepositoryInterface
                 'mobile' => $request->mobile,
                 'password' => password_hash($request->password, PASSWORD_DEFAULT),
             ]);
-            
-            $otp  = rand(11111 , 99999);
-            $user = User::where('email' , $user->email)->first();
-            $user->otps()->create([
-                'user_id' => $user->id,
-                'otp' => $otp,
-                'expire_time' => Carbon::now()->addMinutes(120)
-            ]);
 
-            $otps = $user->otps()->select('otp', 'user_id')->get();
-
-            Log::info('Email validation Code for ' . $user->id . ': ' . $otps->toJson());
-            Mail::to($user->email)->send(new EmailValidation($user->username , $otp));
+            return $user;
 
         } catch (\Throwable $th) {
-            throw $th;
+            Log::error('Registration error: ' . $th->getMessage());
+            return null;
         }
     }
 
