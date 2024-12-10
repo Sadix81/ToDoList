@@ -26,17 +26,18 @@ class GroupController extends Controller
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         return IndexGroupResource::collection($this->groupRepo->index());
     }
 
-    public function store(CreateGroupRequest $request){
+    public function store(CreateGroupRequest $request)
+    {
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
         if ($request->has('user_id') && is_array($request->user_id)) {
             $count = count($request->user_id);
@@ -46,33 +47,36 @@ class GroupController extends Controller
         }
 
         $error = $this->groupRepo->store($request);
-        
-        if($error === null){
-            return response()->json(['message' => __('messages.group.create.success' , ['name' => $request->name])] , 201);
+
+        if ($error === null) {
+            return response()->json(['message' => __('messages.group.create.success', ['name' => $request->name])], 201);
         }
-        return response()->json(['message' => __('messages.group.create.failed' , ['name' => $request->name])] , 500);
+
+        return response()->json(['message' => __('messages.group.create.failed', ['name' => $request->name])], 500);
     }
 
-    public function show(Group $group){
+    public function show(Group $group)
+    {
         $user = Auth::id();
 
         if (! $user) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
-        if($group->owner_id !== $user){
-            return response()->json([ 'عدم دسترسی به گروه مورد نظر']);
+        if ($group->owner_id !== $user) {
+            return response()->json(['عدم دسترسی به گروه مورد نظر']);
         }
 
         return new ShowGroupResource($group);
     }
 
-    public function update(Group $group , UpdateGroupRequest $request){
+    public function update(Group $group, UpdateGroupRequest $request)
+    {
         $auth = Auth::user();
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         if ($auth->id !== $group_owner) {
@@ -83,44 +87,47 @@ class GroupController extends Controller
         $groupUsers = $group->userRoles()->get()->pluck('id');
         $allUsers = $groupUsers; //containe all users from the group which we find it
         $allUsers[] = $auth->id;
-        if(count($allUsers) >= 5){
+        if (count($allUsers) >= 5) {
             return response()->json(['message' => 'تکمیل ظرفیت گروه']);
         }
-        $error = $this->groupRepo->update($group , $request);
-        
-        if($error === null){
-            return response()->json(['message' => __('messages.group.update.success' , ['name' => $request->name])] , 200);
+        $error = $this->groupRepo->update($group, $request);
+
+        if ($error === null) {
+            return response()->json(['message' => __('messages.group.update.success', ['name' => $request->name])], 200);
         }
-        return response()->json(['message' => __('messages.group.update.failed' , ['name' => $request->name])] , 500);
+
+        return response()->json(['message' => __('messages.group.update.failed', ['name' => $request->name])], 500);
     }
 
-    public function destroy(Group $group){
+    public function destroy(Group $group)
+    {
         $auth = Auth::user();
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         if ($auth->id != $group_owner) {
             return response()->json(['message' => 'عدم دسترسی به گروه مورد نظر']);
         }
 
-
         $error = $this->groupRepo->delete($group);
         if ($error === null) {
             return response()->json(['message' => __('messages.group.delete.success')], 200);
         }
+
         return response()->json(['message' => __('messages.group.delete.failed')], 500);
 
     }
 
-    public function detached_user(Group $group , DetachUserRequest $request){
+    public function detached_user(Group $group, DetachUserRequest $request)
+    {
         $auth = Auth::user();
         $group_owner = $group->owner_id;
 
         if (! $auth) {
-            return response()->json(['message' => __('messages.user.Inaccessibility')] , 401);
+            return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
         if ($auth->id !== $group_owner) {
@@ -131,13 +138,12 @@ class GroupController extends Controller
             return response()->json(['error' => 'آدمین نمیتواند خود را حدف کند'], 403); // Admin cannot remove themselves
         }
 
-        $error = $this->groupRepo->detached_user($group , $request);
+        $error = $this->groupRepo->detached_user($group, $request);
         if ($error === null) {
             return response()->json(['message' => __('messages.user.remove.success')], 200);
         }
+
         return response()->json(['message' => __('messages.user.remove.failed')], 500);
 
     }
-
-
 }

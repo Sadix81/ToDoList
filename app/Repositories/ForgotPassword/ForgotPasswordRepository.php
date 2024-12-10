@@ -9,47 +9,48 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface{
-
+class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface
+{
     public function password($request)
     {
         $user_email = $request->email;
-        
-        $user = User::where('email' , $user_email)->first();
 
-        if(! $user){
-            return response()->json(['message' =>  'کاربر مورد نظر وجود ندارد']);
+        $user = User::where('email', $user_email)->first();
+
+        if (! $user) {
+            return response()->json(['message' => 'کاربر مورد نظر وجود ندارد']);
         }
-        
-        $otp  = rand(11111 , 99999);
-        $user = User::where('email' , $user->email)->first();
+
+        $otp = rand(11111, 99999);
+        $user = User::where('email', $user->email)->first();
         $user->otps()->create([
             'user_id' => $user->id,
             'otp' => $otp,
-            'expire_time' => Carbon::now()->addMinutes(120)
+            'expire_time' => Carbon::now()->addMinutes(120),
         ]);
 
         $otps = $user->otps()->select('otp', 'user_id')->latest()->first(); // test for moer than 1 user
-        
-        Log::info("The Forgot Password Code for $user->username " . $user->id . ': ' . $otps);
 
-        Mail::to($user->email)->send(new PasswordForgotPassword($user->username , $otp));
-        
+        Log::info("The Forgot Password Code for $user->username ".$user->id.': '.$otps);
+
+        Mail::to($user->email)->send(new PasswordForgotPassword($user->username, $otp));
+
     }
 
-    public function ChangePassword($user , $request){
+    public function ChangePassword($user, $request)
+    {
 
         $username = $request->username;
-        $user = User::where('username' , $username)->first();
+        $user = User::where('username', $username)->first();
         // dd($user);
 
-        $user_otp = Otp::where('user_id' , $user->id)->first();
+        $user_otp = Otp::where('user_id', $user->id)->first();
         // dd($user_otp);
 
-        if($user_otp->expire_time > Carbon::now()->addMinutes(120)){
-            return response()->json(['message' =>  'کد شما منقضی شده است.لطفا مجددا تلاش کنید.']);
+        if ($user_otp->expire_time > Carbon::now()->addMinutes(120)) {
+            return response()->json(['message' => 'کد شما منقضی شده است.لطفا مجددا تلاش کنید.']);
         }
-        
+
         try {
             $user->update([
                 'password' => password_hash($request->password, PASSWORD_DEFAULT),

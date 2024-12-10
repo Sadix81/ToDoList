@@ -6,10 +6,12 @@ use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function user_list($request){
+    public function user_list($request)
+    {
         try {
-          
-            $users = User::where('username', 'like', '%' . $request->username . '%')->get();
+
+            $users = User::where('username', 'like', '%'.$request->username.'%')->get();
+
             return $users;
         } catch (\Throwable $th) {
             throw $th;

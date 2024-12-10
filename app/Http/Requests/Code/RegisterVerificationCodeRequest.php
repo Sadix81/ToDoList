@@ -9,7 +9,7 @@ class RegisterVerificationCodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required', 'string', 'digits:5'],  
+            'code' => ['required', 'string', 'digits:5'],
         ];
     }
 }

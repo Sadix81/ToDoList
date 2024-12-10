@@ -18,7 +18,7 @@ class CreateTaskRequest extends FormRequest
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:5048'], // Max size 5MB
             'category_id' => ['required', 'array'],
             'category_id.*' => ['required', 'exists:categories,id', 'integer', 'gt:0'],
-            'group_id' => ['nullable', 'exists:groups,id' , 'integer' , 'gt:0'],
+            'group_id' => ['nullable', 'exists:groups,id', 'integer', 'gt:0'],
         ];
     }
 }

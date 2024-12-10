@@ -3,24 +3,23 @@
 namespace App\Repositories\Subtask;
 
 use App\Models\Subtask\Subtask;
-use App\Models\Task\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SubtaskRepository implements SubtaskRepositoryInterface
 {
-
     public function index($task)
     {
         try {
             $subtasks = Subtask::where('task_id', $task->id)->get();
+
             return $subtasks;
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public function store($task , $request)
+    public function store($task, $request)
     {
         $user = Auth::id();
 
@@ -47,12 +46,12 @@ class SubtaskRepository implements SubtaskRepositoryInterface
         }
     }
 
-    public function update($task , $subtask , $request)
+    public function update($task, $subtask, $request)
     {
         $user = Auth::id();
-        
-        $subtask = Subtask::where('task_id' , $task->id)
-        ->where('id' , $subtask->id)->firstOrFail();
+
+        $subtask = Subtask::where('task_id', $task->id)
+            ->where('id', $subtask->id)->firstOrFail();
 
         DB::beginTransaction();
 
@@ -76,7 +75,7 @@ class SubtaskRepository implements SubtaskRepositoryInterface
                 'task_id' => $task->id,
                 'title' => $request->title,
                 'description' => $request->description,
-                'status' => $request->status !== null ?  $request->status : $subtask->status,
+                'status' => $request->status !== null ? $request->status : $subtask->status,
                 'image' => $image_name,
             ]);
             DB::commit();
@@ -86,7 +85,7 @@ class SubtaskRepository implements SubtaskRepositoryInterface
         }
     }
 
-    public function closeStatus($task , $subtask)
+    public function closeStatus($task, $subtask)
     {
         try {
             // XOR
@@ -97,10 +96,10 @@ class SubtaskRepository implements SubtaskRepositoryInterface
         }
     }
 
-    public function delete($task , $subtask)
+    public function delete($task, $subtask)
     {
-        $subtask = Subtask::where('task_id' , $task->id)
-        ->where('id' , $subtask->id)->firstOrFail();
+        $subtask = Subtask::where('task_id', $task->id)
+            ->where('id', $subtask->id)->firstOrFail();
         try {
             $subtask->delete();
         } catch (\Throwable $th) {

@@ -27,6 +27,7 @@ class AuthController extends Controller
 
         if ($user) {
             AuthJob::dispatch($user);
+
             return response()->json(['message' => 'Registration successful, please check your email for verification code.'], 201);
         }
 
@@ -34,25 +35,28 @@ class AuthController extends Controller
 
     }
 
-    public function verify_otp_code(Otp $otp , RegisterVerificationCodeRequest $request){
+    public function verify_otp_code(Otp $otp, RegisterVerificationCodeRequest $request)
+    {
 
         $code = $request->code;
 
         $otp = Otp::where('otp', $code)
-        ->where('expire_time', '>', Carbon::now())
-        ->first();
+            ->where('expire_time', '>', Carbon::now())
+            ->first();
 
         $user = User::find($otp->user_id);
 
-        if($request->code != $otp->otp){
+        if ($request->code != $otp->otp) {
             return response()->json(['message' => 'کد نادرست است'], 404);
         }
 
-        if($request->code == $otp->otp){                
+        if ($request->code == $otp->otp) {
             $user->update(['email_verified_at' => Carbon::now()]);
             $otp->delete();
+
             return response()->json(['message' => __('code.verified.successfully.')], 200);
         }
+
         return response()->json(['message' => __('code.verified.failed.')], 404);
     }
 
