@@ -23,26 +23,26 @@ class TaskRepository implements TaskRepositoryInterface
             'category' => request()->has('category') ? request('category') : null,
         ];
         try {
-            $task = Task::where('owner_id' , Auth::id())
-            ->whereHas('categories' , function($query) use ($req){
-                if($req['category']){
-                    $query->where('category_id' , $req['category']);
-                }
-            })
-            ->where(function($query) use($req){
-                if ($req['search']) {
-                    $query->where('title', 'Like', '%'.$req['search'].'%');
-                }
-                if ($req['finished_at']) {
-                    $query->where('finished_at', 'Like', '%'.$req['finished_at'].'%');
-                }
-                if ($req['priority']) {
-                    $query->where('priority', $req['priority']);
-                }
-                if ($req['status']) {
-                    $query->where('status', 1);
-                }
-            })
+            $task = Task::where('owner_id', Auth::id())
+                ->whereHas('categories', function ($query) use ($req) {
+                    if ($req['category']) {
+                        $query->where('category_id', $req['category']);
+                    }
+                })
+                ->where(function ($query) use ($req) {
+                    if ($req['search']) {
+                        $query->where('title', 'Like', '%'.$req['search'].'%');
+                    }
+                    if ($req['finished_at']) {
+                        $query->where('finished_at', 'Like', '%'.$req['finished_at'].'%');
+                    }
+                    if ($req['priority']) {
+                        $query->where('priority', $req['priority']);
+                    }
+                    if ($req['status']) {
+                        $query->where('status', 1);
+                    }
+                })
                 ->orderBy($req['sort'], $req['order'])
                 ->paginate($req['limit']);
 
@@ -77,7 +77,6 @@ class TaskRepository implements TaskRepositoryInterface
         try {
             $task = Task::create([
                 'owner_id' => $request->owner_id ?: $owner_id,
-                // 'user_id' => $request->user_id,
                 'group_id' => $request->group_id,
                 'title' => $request->title,
                 'description' => $request->description,
@@ -118,14 +117,13 @@ class TaskRepository implements TaskRepositoryInterface
 
             $task->update([
                 'owner_id' => $request->owner_id ?: $user->id,
-                // 'user_id' => $request->user_id,
                 'group_id' => $request->group_id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'started_at' => $request->started_at ? $request->started_at : $task->started_at,
                 'finished_at' => $request->finished_at ? $request->finished_at : $task->finished_at,
                 'priority' => $request->priority ? $request->priority : $task->priority,
-                'status' => $request->status !== null ?  $request->status : $task->status,
+                'status' => $request->status !== null ? $request->status : $task->status,
                 'image' => $image_name,
             ]);
             if ($request->has('category_id')) {

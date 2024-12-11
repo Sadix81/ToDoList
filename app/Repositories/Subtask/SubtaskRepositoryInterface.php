@@ -6,11 +6,11 @@ interface SubtaskRepositoryInterface
 {
     public function index($task);
 
-    public function store($task , $request);
+    public function store($task, $request);
 
-    public function update($task , $subtask, $request);
+    public function update($task, $subtask, $request);
 
-    public function closeStatus($task , $subtask);
+    public function closeStatus($task, $subtask);
 
-    public function delete($task , $subtask);
+    public function delete($task, $subtask);
 }

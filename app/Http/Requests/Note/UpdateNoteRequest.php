@@ -9,7 +9,7 @@ class UpdateNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => ['nullable' , 'string' , 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

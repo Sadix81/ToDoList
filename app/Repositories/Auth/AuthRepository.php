@@ -2,13 +2,11 @@
 
 namespace App\Repositories\Auth;
 
-use App\Mail\Register\EmailValidation;
-use App\Models\Otp\Otp;
 use App\Models\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rules\Exists;
+
 class AuthRepository implements AuthRepositoryInterface
 {
     public function register($request)
@@ -25,8 +23,9 @@ class AuthRepository implements AuthRepositoryInterface
             return $user;
 
         } catch (\Throwable $th) {
-            Log::error('Registration error: ' . $th->getMessage());
-            return null;
+            Log::error('Registration error: '.$th->getMessage());
+
+            throw $th;
         }
     }
 

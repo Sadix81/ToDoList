@@ -14,7 +14,7 @@ class Group extends Model
 
     protected $fillable = [
         'name',
-        'owner_id'
+        'owner_id',
     ];
 
     public function users()

@@ -32,6 +32,4 @@ class UserRole extends Model
     {
         return $this->belongsToMany(Role::class);
     }
-
-
 }

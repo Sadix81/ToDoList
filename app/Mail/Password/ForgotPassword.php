@@ -3,7 +3,6 @@
 namespace App\Mail\Password;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,9 +13,10 @@ class ForgotPassword extends Mailable
     use Queueable, SerializesModels;
 
     private $otp;
+
     private $name;
 
-    public function __construct($name , $otp)
+    public function __construct($name, $otp)
     {
         $this->name = $name;
         $this->otp = $otp;
@@ -42,7 +42,7 @@ class ForgotPassword extends Mailable
             with: [
                 'name' => $this->name,
                 'otp' => $this->otp,
-                ]
+            ]
         );
     }
 
