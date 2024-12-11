@@ -17,7 +17,7 @@ class UpdateTaskRequest extends FormRequest
                 return $query->where('owner_id', $ownerId);
             })->ignore($this->task),
             ],
-            'priority' => ['required', 'in:1,2,3'],
+            'priority' => ['required', 'in:1,2,3'], //سه بالاترین درجه و اولویت بیشتری داره
             'description' => ['nullable', 'string', 'max:255'],
             'started_at' => ['nullable', 'date'],
             'finished_at' => ['nullable', 'date'],
