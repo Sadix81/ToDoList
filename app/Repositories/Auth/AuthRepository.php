@@ -5,6 +5,7 @@ namespace App\Repositories\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\Exists;
 
 class AuthRepository implements AuthRepositoryInterface
 {
@@ -24,7 +25,7 @@ class AuthRepository implements AuthRepositoryInterface
         } catch (\Throwable $th) {
             Log::error('Registration error: '.$th->getMessage());
 
-            return null;
+            throw $th;
         }
     }
 

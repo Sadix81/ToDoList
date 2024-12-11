@@ -10,7 +10,7 @@ class CreateTaskRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:100'],
-            'priority' => ['required', 'in:1,2,3'],
+            'priority' => ['required', 'in:1,2,3'], //سه بالاترین درجه و اولویت بیشتری داره
             'description' => ['nullable', 'string', 'max:255'],
             'started_at' => ['nullable', 'date'],
             'finished_at' => ['nullable', 'date'],
