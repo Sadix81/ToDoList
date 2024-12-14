@@ -8,5 +8,7 @@ interface AuthRepositoryInterface
 
     public function login($request);
 
+    public function ResendCode($request);
+
     public function logout();
 }
