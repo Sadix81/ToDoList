@@ -44,7 +44,7 @@ class AuthController extends Controller
         $otp = Otp::where('otp', $code)->first();
 
         if(! $otp){
-            return response()->json(['error' => 'code not found.'], 404);
+            return response()->json(['message' => 'User not found.'], 404);
         }
 
         if($otp->expire_time < Carbon::now()){

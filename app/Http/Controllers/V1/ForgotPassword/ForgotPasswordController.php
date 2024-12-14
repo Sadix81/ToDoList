@@ -36,15 +36,25 @@ class ForgotPasswordController extends Controller
     {
         $code = $request->code;
 
-        $otp = Otp::where('otp', $code)
-            ->where('expire_time', '>', Carbon::now())
-            ->first();
+        $otp = Otp::where('otp', $code)->first();
 
-        if ($request->code != $otp->otp) {
-            return response()->json(['message' => 'کد نادرست است'], 404);
+        if(! $otp){
+            return response()->json(['error' => 'code not found.'], 404);
+        }
+
+        if($otp->expire_time < Carbon::now()){
+            $otp->delete();
+            return response()->json(['message' => 'کد منقضی شده است. لطفاً کد جدید درخواست کنید.'], 410); // 410 Gone
+        }
+
+        $user = User::find($otp->user_id);
+    
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
         }
 
         if ($request->code == $otp->otp) {
+            $otp->delete();
             return response()->json(['message' => __('code.verified.successfully.')], 200);
         }
 
