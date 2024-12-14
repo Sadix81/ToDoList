@@ -18,6 +18,7 @@ Route::prefix('v1/user/')->group(function () {
     Route::post('/forgot/password', [ForgotPasswordController::class, 'forgotpassword']);
     Route::post('password/verify/code', [ForgotPasswordController::class, 'verify_password_otp_code']);
     Route::post('/change/password', [ForgotPasswordController::class, 'ChangePassword']);
+    Route::post('/resend/code', [AuthController::class, 'ResendCode']);
 })->middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 

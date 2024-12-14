@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Code\RegisterVerificationCodeRequest;
+use App\Http\Requests\ResendCode\ResendCodeRequest;
 use App\Jobs\Auth\AuthJob;
 use App\Models\Otp\Otp;
 use App\Models\User;
@@ -40,19 +41,24 @@ class AuthController extends Controller
 
         $code = $request->code;
 
-        $otp = Otp::where('otp', $code)
-            ->where('expire_time', '>', Carbon::now())
-            ->first();
+        $otp = Otp::where('otp', $code)->first();
 
-        $user = User::find($otp->user_id);
-
-        if ($request->code != $otp->otp) {
-            return response()->json(['message' => 'کد نادرست است'], 404);
+        if(! $otp){
+            return response()->json(['message' => 'User not found.'], 404);
         }
 
-        if($otp->expire_time === Carbon::now()){
-            return response()->json(['message' => 'کد نامعتبر است.کد جدید ارسال کنید'], 404);
-            $otp->delete();
+        if($otp->expire_time < Carbon::now()){
+            return response()->json(['message' => 'کد منقضی شده است. لطفاً کد جدید درخواست کنید.'], 410); // 410 Gone
+        }
+
+        $user = User::find($otp->user_id);
+    
+        if (!$user) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+
+        if ($request->code != $otp->otp) {
+            return response()->json(['message' => 'کد نامعتبراست'], 404);
         }
 
         if ($request->code == $otp->otp) {
@@ -61,8 +67,6 @@ class AuthController extends Controller
 
             return response()->json(['message' => __('code.verified.successfully.')], 200);
         }
-
-
 
         return response()->json(['message' => __('code.verified.failed.')], 404);
     }
@@ -82,5 +86,15 @@ class AuthController extends Controller
         $accessToken = $this->authRepo->logout();
 
         return response()->json(['message' => __('messages.user.auth.logout.success'), '__token__' => $accessToken], 200);
+    }
+
+    public function ResendCode(ResendCodeRequest $request){
+
+        $error = $this->authRepo->ResendCode($request);
+
+        if($error === null){
+            return response()->json(['message' => 'messages.Code.Resend.successful'], 200);
+        }
+        return response()->json(['message' => __('messages.Code.Resend.failed')], 404);
     }
 }
