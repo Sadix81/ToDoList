@@ -54,7 +54,6 @@ class ForgotPasswordController extends Controller
         }
 
         if ($request->code == $otp->otp) {
-            $otp->delete();
             return response()->json(['message' => __('code.verified.successfully.')], 200);
         }
 
@@ -63,10 +62,8 @@ class ForgotPasswordController extends Controller
 
     public function ChangePassword(User $user, ChangePasswordRequest $request)
     {
-
-        $find_user = $request->username;
-        $user = User::where('username', $find_user)->first();
-        // dd($user);
+        $user = $request->username;
+        $user = User::where('username', $request->username)->first();
 
         if (! $user) {
             return response()->json(['message' => 'کاربر مورد نظر وجود ندارد'], 404);
@@ -77,7 +74,7 @@ class ForgotPasswordController extends Controller
         }
 
         if ($request->password !== $request->confirmpassword) {
-            return response()->json(['یکسان بودن دو مقدار الزامیست']);
+            return response()->json(['message' => 'یکسان بودن دو مقدار الزامیست']);
         }
 
         $error = $this->passRepo->ChangePassword($user, $request);
