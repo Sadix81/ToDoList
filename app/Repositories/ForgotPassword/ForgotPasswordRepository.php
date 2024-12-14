@@ -26,7 +26,7 @@ class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface
         $user->otps()->create([
             'user_id' => $user->id,
             'otp' => $otp,
-            'expire_time' => Carbon::now()->addMinutes(120),
+            'expire_time' => Carbon::now()->addSecond(20),
         ]);
 
         $otps = $user->otps()->select('otp', 'user_id')->latest()->first(); // test for moer than 1 user
@@ -42,10 +42,7 @@ class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface
 
         $username = $request->username;
         $user = User::where('username', $username)->first();
-        // dd($user);
-
         $user_otp = Otp::where('user_id', $user->id)->first();
-        // dd($user_otp);
 
         if ($user_otp->expire_time > Carbon::now()->addMinutes(120)) {
             return response()->json(['message' => 'کد شما منقضی شده است.لطفا مجددا تلاش کنید.']);
