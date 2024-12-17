@@ -31,8 +31,7 @@ class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface
 
         $otps = $user->otps()->select('otp', 'user_id')->latest()->first(); // test for moer than 1 user
 
-        Log::info("The Forgot Password Code for $user->username ".$user->id.': '.$otps);
-
+        Log::info("The Forgot Password Code for {$user->username} (ID: {$user->id}): is  $otps->otp");
         Mail::to($user->email)->send(new PasswordForgotPassword($user->username, $otp));
 
     }

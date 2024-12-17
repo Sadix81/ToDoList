@@ -37,7 +37,7 @@ class AuthJob implements ShouldQueue
             'expire_time' => Carbon::now()->addMinutes(120),
         ]);
 
-        Log::info('Email validation Code for '.$this->user->id.': '.$otp);
+        Log::info("The Email validation Code for {$this->user->username} (ID: {$this->user->id}): is $otp");
         Mail::to($this->user->email)->send(new EmailValidation($this->user->username, $otp));
     }
 }
