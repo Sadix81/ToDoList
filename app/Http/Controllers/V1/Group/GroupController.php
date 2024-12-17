@@ -39,6 +39,15 @@ class GroupController extends Controller
         if (! $user) {
             return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
+
+        if($request->has('user_id') && in_array($user , $request->input('user_id'))){
+            return response()->json(['message' => 'مجاز به اضافه کردن کجدد خود نیستید'], 403);
+        }
+
+        if (count($request->input('user_id')) > count(array_unique($request->input('user_id')))) {
+            return response()->json(['message' => 'نمیتوانید یک کاربر را دو بار اضافه کنید'], 409);
+        }
+
         if ($request->has('user_id') && is_array($request->user_id)) {
             $count = count($request->user_id);
             if ($count >= 5) {
@@ -72,24 +81,33 @@ class GroupController extends Controller
 
     public function update(Group $group, UpdateGroupRequest $request)
     {
-        $auth = Auth::user();
+        $user = Auth::id();
         $group_owner = $group->owner_id;
 
-        if (! $auth) {
+        if (! $user) {
             return response()->json(['message' => __('messages.user.Inaccessibility')], 401);
         }
 
-        if ($auth->id !== $group_owner) {
+        if ($user !== $group_owner) {
             return response()->json(['message' => 'عدم دسترسی به گروه مورد نظر']);
         }
 
+        if($request->has('user_id') && in_array($user , $request->input('user_id'))){
+            return response()->json(['message' => 'مجاز به اضافه کردن کجدد خود نیستید'], 403);
+        }
+
         // Check the users of the group
-        $groupUsers = $group->userRoles()->get()->pluck('id');
+        $groupUsers = $group->userRoles()->get()->pluck('id')->toArray();
         $allUsers = $groupUsers; //containe all users from the group which we find it
-        $allUsers[] = $auth->id;
+        $allUsers[] = $user;
         if (count($allUsers) >= 5) {
             return response()->json(['message' => 'تکمیل ظرفیت گروه']);
         }
+
+        if (in_array((int)$request->input('user_id') , $allUsers)) {
+            return response()->json(['message' => 'شخص مورد نظر در حال حاضر عضو هست'] , 409);
+        }
+
         $error = $this->groupRepo->update($group, $request);
 
         if ($error === null) {
