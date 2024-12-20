@@ -19,8 +19,8 @@ class Group extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
-    }
+        return $this->belongsToMany(User::class, 'user_roles')->withPivot('user_role_id');
+    }    
 
     public function tasks()
     {
@@ -29,6 +29,6 @@ class Group extends Model
 
     public function userRoles()//pivot table between uers and groups
     {
-        return $this->hasMany(UserRole::class);
+        return $this->hasMany(UserRole::class, 'group_id');
     }
 }

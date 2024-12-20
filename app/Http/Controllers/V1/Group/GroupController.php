@@ -97,14 +97,14 @@ class GroupController extends Controller
         }
 
         // Check the users of the group
-        $groupUsers = $group->userRoles()->get()->pluck('id')->toArray();
+        $groupUsers = $group->userRoles()->get()->pluck('user_id')->toArray();
         $allUsers = $groupUsers; //containe all users from the group which we find it
         $allUsers[] = $user;
-        if (count($allUsers) >= 5) {
+        
+        if (count($allUsers) > 6) {
             return response()->json(['message' => 'تکمیل ظرفیت گروه']);
         }
-
-        if (in_array((int)$request->input('user_id') , $allUsers)) {
+        if (array_intersect($allUsers , $request->user_id)) { //array_intersect => چک میکند که ایا ارایه ای که میفرستیم در ارایه ای که داریم هست یا نه
             return response()->json(['message' => 'شخص مورد نظر در حال حاضر عضو هست'] , 409);
         }
 
