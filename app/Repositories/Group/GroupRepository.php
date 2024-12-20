@@ -37,7 +37,7 @@ class GroupRepository implements GroupRepositoryInterface
     public function store($request)
     {
         $userId = Auth::id();
-
+        
         $usernames = $request->input('user_id', []);
 
         $adminRole = Role::findByName('admin', 'api');
@@ -50,20 +50,18 @@ class GroupRepository implements GroupRepositoryInterface
                 'owner_id' => $request->owner_id ?: $userId,
             ]);
             //add the user who created the group to pivote_table as admin
-            $userRole = new UserRole;
-            $userRole->user_id = $userId;
-            $userRole->group_id = $group->id;
-            $userRole->role_id = $adminRole->id;
-            $userRole->save();
+            $group->users()->attach(
+                $userId,
+                 ['user_role_id' => $adminRole->id]
+                );
 
             foreach ($usernames as $member) {
-                $userToAdd = User::where('id', $member)->first();
+                $userToAdd = User::find($member);
                 if ($userToAdd) {
-                    $newUserRole = new UserRole;
-                    $newUserRole->user_id = $userToAdd->id;
-                    $newUserRole->group_id = $group->id;
-                    $newUserRole->role_id = $memberRole->id;
-                    $newUserRole->save();
+                    $group->users()->attach(
+                        $userToAdd->id,
+                         ['user_role_id' => $memberRole->id]
+                        );
                 }
             }
 
@@ -86,14 +84,13 @@ class GroupRepository implements GroupRepositoryInterface
                 'name' => $request->name,
                 'owner_id' => $owner,
             ]);
-            foreach ($usernames as $username) {
-                $member = User::where('id', $username)->first();
-                if ($member) {
-                    $newUserRole = new UserRole;
-                    $newUserRole->user_id = $member->id;
-                    $newUserRole->group_id = $group->id;
-                    $newUserRole->role_id = $memberRole->id;
-                    $newUserRole->save();
+            foreach ($usernames as $member) {
+                $userToAdd = User::find($member);
+                if ($userToAdd) {
+                    $group->users()->attach(
+                        $userToAdd->id,
+                         ['user_role_id' => $memberRole->id]
+                        );
                 }
             }
 
