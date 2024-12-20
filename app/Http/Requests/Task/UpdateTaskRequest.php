@@ -23,8 +23,8 @@ class UpdateTaskRequest extends FormRequest
             'finished_at' => ['nullable', 'date'],
             'status' => ['nullable', 'integer', 'in:0,1'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp', 'max:5048'], // Max size 2MB
-            'category_id' => ['required', 'array'],
-            'category_id.*' => ['required', 'exists:categories,id', 'integer', 'gt:0'],
+            'category_id' => ['nullable', 'array'],
+            'category_id.*' => ['nullable', 'exists:categories,id', 'integer'],
             'group_id' => ['nullable', 'exists:groups,id', 'integer', 'gt:0'],
         ];
     }
