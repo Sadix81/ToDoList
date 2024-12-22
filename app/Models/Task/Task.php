@@ -27,6 +27,7 @@ class Task extends Model
         'user_id',
         'group_id',
         'image',
+        'category_id',
     ];
 
     public function user()
