@@ -62,9 +62,6 @@ class ForgotPasswordController extends Controller
 
     public function ChangePassword(User $user, ChangePasswordRequest $request)
     {
-        $user = $request->username;
-        $user = User::where('username', $request->username)->first();
-
         if (! $user) {
             return response()->json(['message' => 'کاربر مورد نظر وجود ندارد'], 404);
         }
