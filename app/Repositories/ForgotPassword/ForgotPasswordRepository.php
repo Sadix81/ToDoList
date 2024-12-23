@@ -38,9 +38,7 @@ class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface
 
     public function ChangePassword($user, $request)
     {
-
-        $username = $request->username;
-        $user = User::where('username', $username)->first();
+        $user = User::where('email', $request->email)->first();
         $user_otp = Otp::where('user_id', $user->id)->first();
 
         if (! $user_otp) {
