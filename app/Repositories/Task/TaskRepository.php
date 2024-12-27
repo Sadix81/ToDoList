@@ -127,7 +127,15 @@ class TaskRepository implements TaskRepositoryInterface
                 'image' => $image_name,
             ]);
             if ($request->has('category_id')) {
-                $task->categories()->sync($request->category_id);
+                if (is_array($request->category_id) && !empty($request->category_id)) {
+                    $validCategoryIds = array_filter($request->category_id, function ($id) { //filter invalid data
+                        return is_numeric($id) && $id > 0;  //return valid data
+                    });
+            
+                    if (!empty($validCategoryIds)) {
+                        $task->categories()->sync($validCategoryIds);
+                    }
+                }
             }
 
             DB::commit();

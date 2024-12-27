@@ -26,7 +26,7 @@ class ForgotPasswordRepository implements ForgotpasswordRepositoryInterface
         $user->otps()->create([
             'user_id' => $user->id,
             'otp' => $otp,
-            'expire_time' => Carbon::now()->addSecond(20),
+            'expire_time' => Carbon::now()->addSeconds(300),
         ]);
 
         $otps = $user->otps()->select('otp', 'user_id')->latest()->first(); // test for moer than 1 user
