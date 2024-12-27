@@ -66,10 +66,6 @@ class ForgotPasswordController extends Controller
             return response()->json(['message' => 'کاربر مورد نظر وجود ندارد'], 404);
         }
 
-        if (password_verify($request->password, $user->password) || password_verify($request->confirmpassword, $user->password)) {
-            return response()->json(['message' => 'نمیتوان رمز فعلی را انتخاب کرد']);
-        }
-
         if ($request->password !== $request->confirmpassword) {
             return response()->json(['message' => 'یکسان بودن دو مقدار الزامیست']);
         }
