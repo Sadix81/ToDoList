@@ -11,6 +11,7 @@ class ChangePasswordRequest extends FormRequest
         return [
             'password' => ['required', 'min:8', 'regex:/[0-9]/', 'regex:/[A-Z]/', 'regex:/[a-z]/' , 'string'],
             'confirmpassword' => ['required', 'min:8', 'regex:/[0-9]/', 'regex:/[A-Z]/', 'regex:/[a-z]/' , 'string'],
+            'email' => ['required', 'email', 'exists:users,email'],
         ];
     }
 }
